@@ -14,6 +14,46 @@
     <h1>Home Page</h1>
     <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
 
+    <!-- User Profile Management Section -->
+    <section class="user-profile-section">
+      <h2>User Profile Management</h2>
+      
+      <!-- Change Password -->
+      <div class="form-group">
+        <label for="password">Change Password</label>
+        <input type="password" id="password" class="form-control" placeholder="New Password">
+        <button class="btn btn-primary">Change Password</button>
+      </div>
+      
+      <!-- Change Profile Photo -->
+      <div class="form-group">
+        <label for="profile-photo">Change Profile Photo</label>
+        <input type="file" id="profile-photo" class="form-control-file">
+        <button class="btn btn-primary">Upload Photo</button>
+      </div>
+      
+      <!-- Account Deletion Process -->
+      <button class="btn btn-danger">Delete Account</button>
+      
+      <!-- Email Preferences -->
+      <h3>Email Preferences</h3>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="newsletter-subscription">
+        <label class="form-check-label" for="newsletter-subscription">Subscribe to Newsletter</label>
+      </div>
+      
+      <!-- Account Settings -->
+      <h3>Account Settings</h3>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="auto-login">
+        <label class="form-check-label" for="auto-login">Auto Log In</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="devices-logged-in">
+        <label class="form-check-label" for="devices-logged-in">Remember Devices Logged In</label>
+      </div>
+    </section>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

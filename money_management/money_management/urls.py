@@ -16,13 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mod1 import views #need to do this for every module
+from mod1 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.signup,name='signup'),
     path('login/',views.loginpage,name='login'),
     path('home/',views.home,name='home'),
-    path('logout/',views.logoutpage,name='logout'), #path('name/', views.funcname,)
-    
+    path('logout/',views.logoutpage,name='logout')
 ]
