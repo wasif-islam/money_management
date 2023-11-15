@@ -188,7 +188,62 @@
 
         <!-- Search and Sort History -->
         <h3>Search and Sort History</h3>
-    </div>
-</body>
-
-</html>
+        
+        
+        <div class="container">
+            <!-- Your existing content -->
+    
+            <!-- Bill Scheduling -->
+            <div class="scheduling-section">
+                <h3>Bill Scheduling</h3>
+                <ul>
+                    <li>Payment History</li>
+                    <li>Download statements</li>
+                </ul>
+    
+                <!-- Additional content for Bill Scheduling can be added here -->
+                <!-- For example: -->
+                <h4>Schedule Future Payments</h4>
+                <form>
+                    <div class="form-group">
+                        <label for="scheduled-date">Select Date:</label>
+                        <input type="date" id="scheduled-date" name="scheduled_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduled-amount">Enter Amount:</label>
+                        <input type="text" id="scheduled-amount" name="scheduled_amount" placeholder="Enter Amount">
+                    </div>
+                    <button type="submit">Schedule Payment</button>
+                </form>
+            </div>
+    
+            <!-- Search and Sort History -->
+            <h3>Search and Sort History</h3>
+        </div>
+        <style media="screen">
+            /* Add your styles for the new section here */
+            .scheduling-section {
+                margin-top: 30px;
+            }
+    
+            .scheduling-section h3 {
+                font-size: 32px;
+                font-weight: 500;
+                line-height: 42px;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            .scheduling-section ul {
+                list-style-type: none;
+                padding: 0;
+            }
+    
+            .scheduling-section li {
+                margin-bottom: 15px;
+                color: #fff;
+            }
+        </style>
+    </body>
+    
+    </html>
