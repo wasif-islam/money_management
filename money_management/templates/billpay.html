@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bill Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <!-- Add any additional styles or links as needed -->
+    <style media="screen">
+        /* Add your styles here */
+        body {
+            background-color: #00CED1;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.13);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+        }
+
+        h3 {
+            font-size: 32px;
+            font-weight: 500;
+            line-height: 42px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h4 {
+            font-size: 28px;
+            font-weight: 500;
+            line-height: 38px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .form-section {
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        button {
+            background-color: #ffffff;
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h4>Bill Retrieval</h4>
+
+        <!-- Linking Accounts Form -->
+        <div class="form-section" id="linking-account-form">
+            <h3>Linking Accounts</h3>
+            <form>
+                <div class="form-group">
+                    <label for="email-link">Want to link your account? Provide your email:</label>
+                    <input type="email" id="email-link" placeholder="Enter your email">
+                </div>
+                <button type="submit">Link Account</button>
+            </form>
+        </div>
+
+        <!-- Manual Entry Form -->
+        <div class="form-section" id="manual-entry-form">
+            <h3>Manual Entry</h3>
+            <div class="form-group">
+                <label for="bill-name">Bill Name</label>
+                <input type="text" id="bill-name" placeholder="Enter Bill Name">
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="text" id="amount" placeholder="Enter Amount">
+            </div>
+
+            <div class="form-group">
+                <label for="due-date">Due Date</label>
+                <input type="date" id="due-date">
+            </div>
+        </div>
+
+        <!-- Categorizing Bill Form -->
+        <div class="form-section" id="categorizing-bill-form">
+            <h3>Categorizing Bill</h3>
+            <div class="form-group">
+                <label for="bill-category">Select Bill Category:</label>
+                <select id="bill-category" name="bill_category">
+                    <option value="utilities">Utilities</option>
+                    <option value="rent">Rent</option>
+                    <option value="groceries">Groceries</option>
+                    <!-- Add more categories as needed -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bill-description">Bill Description:</label>
+                <textarea id="bill-description" name="bill_description" placeholder="Enter a description for the bill"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="bill-amount">Bill Amount:</label>
+                <input type="text" id="bill-amount" name="bill_amount" placeholder="Enter Amount">
+            </div>
+
+            <div class="form-group">
+                <label for="bill-due-date">Due Date:</label>
+                <input type="date" id="bill-due-date" name="bill_due_date">
+            </div>
+
+            <button type="submit">Categorize Bill</button>
+        </div>
+
+        <!-- Due Date Reminders -->
+        <h3>Due Date Reminders</h3>
+        <div class="form-section" id="due-date-reminder-form">
+            <h4>Email Reminder</h4>
+            <form>
+                <div class="form-group">
+                    <label for="email-reminders">Provide your email to set up a reminder:</label>
+                    <input type="email" id="email-reminders" placeholder="Enter your email">
+                </div>
+                <button type="submit">Set up reminder</button>
+            </form>
+
+            <h4>Custom Reminder</h4>
+            <form>
+                <div class="form-group">
+                    <label for="custom-date">Select Date:</label>
+                    <input type="date" id="custom-date" name="custom_date">
+                </div>
+                <div class="form-group">
+                    <label for="custom-time">Select Time:</label>
+                    <input type="time" id="custom-time" name="custom_time">
+                </div>
+                <button type="submit">Set up custom reminder</button>
+            </form>
+        </div>
+
+        <!-- Bill Scheduling -->
+        <h3>Bill Scheduling</h3>
+        <ul>
+            <li>Payment History</li>
+            <li>Download statements</li>
+        </ul>
+
+        <!-- Search and Sort History -->
+        <h3>Search and Sort History</h3>
+    </div>
+</body>
+
+</html>

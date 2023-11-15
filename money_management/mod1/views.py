@@ -42,3 +42,7 @@ def signup(request):
 def logoutpage(request):
     logout(request)
     return redirect('login')
+
+def billpay(request):
+    
+    return render(request, 'billpay.html')
