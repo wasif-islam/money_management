@@ -5,7 +5,7 @@
     <title>Bill Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <!-- Add any additional styles or links as needed -->
+    
     <style media="screen">
         /* Add your styles here */
         body {
@@ -104,22 +104,28 @@
         </div>
 
         <!-- Manual Entry Form -->
+        <!-- Manual Entry Form -->
         <div class="form-section" id="manual-entry-form">
             <h3>Manual Entry</h3>
-            <div class="form-group">
-                <label for="bill-name">Bill Name</label>
-                <input type="text" id="bill-name" placeholder="Enter Bill Name">
-            </div>
+            <form method="post" action="{% url 'bill_pay' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="bill-name">Bill Name</label>
+                    <input type="text" id="bill-name" name="bill_name" placeholder="Enter Bill Name">
+                </div>
 
-            <div class="form-group">
-                <label for="amount">Amount</label>
-                <input type="text" id="amount" placeholder="Enter Amount">
-            </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="text" id="amount" name="amount" placeholder="Enter Amount">
+                </div>
 
-            <div class="form-group">
-                <label for="due-date">Due Date</label>
-                <input type="date" id="due-date">
-            </div>
+                <div class="form-group">
+                    <label for="due-date">Due Date</label>
+                    <input type="date" id="due-date" name="due_date">
+                </div>
+
+                <button type="submit">Submit</button>
+            </form>
         </div>
 
         <!-- Categorizing Bill Form -->
