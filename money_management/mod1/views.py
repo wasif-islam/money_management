@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from .models import CustomUser
 from .models import CustomBill
 from .forms import CustomBillForm
+from .models import CreditCard
+from .forms import CreditCardForm
+from .forms import BankAccountForm
 # Create your views here.
 @login_required(login_url='login')
 def home(request):
@@ -58,3 +61,29 @@ def billpay(request):
     else:
         form = CustomBillForm()
     return render(request, 'billpay.html')
+
+def link_credit_card(request):
+    if request.method == 'POST':
+        form = CreditCardForm(request.POST)
+        if form.is_valid():
+            credit_card = form.save(commit=False)
+            credit_card.user = request.user
+            credit_card.save()
+            return redirect('home')  
+    else:
+        form = CreditCardForm()
+
+    return render(request, 'billpay.html', {'credit_card_form': form})  # Change 'form' to 'credit_card_form'
+
+def link_bank_account(request):
+    if request.method == 'POST':
+        form = BankAccountForm(request.POST)
+        if form.is_valid():
+            bank_account = form.save(commit=False)
+            bank_account.user = request.user
+            bank_account.save()
+            return redirect('home')  
+    else:
+        form = BankAccountForm()
+
+    return render(request, 'billpay.html', {'bank_account_form': form})  # Change 'form' to 'bank_account_form'

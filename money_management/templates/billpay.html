@@ -91,19 +91,26 @@
     <div class="container">
         <h4>Bill Retrieval</h4>
 
-        <!-- Linking Accounts Form -->
-        <div class="form-section" id="linking-account-form">
-            <h3>Linking Accounts</h3>
-            <form>
-                <div class="form-group">
-                    <label for="email-link">Want to link your account? Provide your email:</label>
-                    <input type="email" id="email-link" placeholder="Enter your email">
-                </div>
-                <button type="submit">Link Account</button>
+        <!-- Linking Credit Card Form -->
+        <div class="form-section" id="linking-credit-card-form">
+            <h3>Linking Credit Card</h3>
+            <form method="post" action="{% url 'link_credit_card' %}">
+                {% csrf_token %}
+                {{ credit_card_form.as_table }}
+                <button type="submit">Link Credit Card</button>
             </form>
         </div>
 
-        <!-- Manual Entry Form -->
+        <!-- Linking Bank Account Form -->
+        <div class="form-section" id="linking-bank-account-form">
+            <h3>Linking Bank Account</h3>
+            <form method="post" action="{% url 'link_bank_account' %}">
+                {% csrf_token %}
+                {{ bank_account_form.as_table }}
+                <button type="submit">Link Bank Account</button>
+            </form>
+        </div>
+        
         <!-- Manual Entry Form -->
         <div class="form-section" id="manual-entry-form">
             <h3>Manual Entry</h3>

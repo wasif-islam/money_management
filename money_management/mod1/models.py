@@ -22,3 +22,25 @@ class CustomBill(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s {self.bill_name}"
+    
+
+from .models import CustomUser
+
+class CreditCard(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    card_number = models.CharField(max_length=16, unique=True)
+    cvc = models.CharField(max_length=4)
+    #exp_date = models.CharField(max_length=5) 
+    exp_date = models.DateField()
+
+    def __str__(self):
+        return f"{self.user.username}'s Credit Card"
+
+class BankAccount(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    account_number = models.CharField(max_length=16, unique=True)
+    bank_name = models.CharField(max_length=255)
+    branch_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.user.username}'s Bank Account"
