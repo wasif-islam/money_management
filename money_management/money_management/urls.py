@@ -20,7 +20,8 @@ from mod1 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.signup,name='signup'),
+    path('', views.signup, name='signup'),
+    path('signup/',views.signup,name='signup'),
     path('login/',views.loginpage,name='login'),
     path('home/',views.home,name='home'),
     path('logout/',views.logoutpage,name='logout'),

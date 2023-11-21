@@ -73,8 +73,7 @@ def link_credit_card(request):
     else:
         form = CreditCardForm()
 
-    return render(request, 'billpay.html', {'credit_card_form': form})  # Change 'form' to 'credit_card_form'
-
+    return render(request, 'billpay.html', {'credit_card_form': form})  
 def link_bank_account(request):
     if request.method == 'POST':
         form = BankAccountForm(request.POST)
@@ -86,4 +85,4 @@ def link_bank_account(request):
     else:
         form = BankAccountForm()
 
-    return render(request, 'billpay.html', {'bank_account_form': form})  # Change 'form' to 'bank_account_form'
+    return render(request, 'billpay.html', {'bank_account_form': form})  
