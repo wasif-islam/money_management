@@ -143,32 +143,47 @@
     <form method="post" action="{% url 'create_budget' %}">
         {% csrf_token %}
         <h1>Budget Creation and Monitoring</h1>
-    
+
         <label for="id_budget_month">Budget Month</label>
-        <select name="budget_month" id="id_budget_month" required>
-            {% for month, month_name in form.MONTH_CHOICES %}
-                <option value="{{ month }}">{{ month_name }}</option>
-            {% endfor %}
-        </select>
-    
+        <input type="text" name="budget_month" id="id_budget_month" placeholder="Enter budget month" required>
+
         <label for="id_target_budget">Target Budget</label>
         <input type="number" name="target_budget" id="id_target_budget" placeholder="Enter target budget" required>
-    
+
         <button type="submit">Create Budget</button>
     </form>
+
     <!-- Show Remaining Budget Section -->
+    <label for="budgetMonth">Select Month:</label>
+    <select id="budgetMonth">
+        <!-- JavaScript will dynamically populate options here -->
+    </select>
     <button id="showRemainingBudget">Show Remaining Budget</button>
     <div id="remainingBudgetMessage"></div>
 
     <script>
         // Add this script to your HTML file to handle the button click
         document.getElementById('showRemainingBudget').addEventListener('click', function () {
-            fetch('/show_remaining_budget/')  // Change the URL if needed
+            // Get the selected month from the dropdown
+            const selectedMonth = document.getElementById('budgetMonth').value;
+
+            // Make the AJAX request with the selected month
+            fetch(`/show_remaining_budget/${selectedMonth}/`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('remainingBudgetMessage').innerText = data.message;
                 });
         });
+
+        // Dynamically populate the month dropdown with a range of months
+        const monthDropdown = document.getElementById('budgetMonth');
+        for (let month = 1; month <= 12; month++) {
+            const option = document.createElement('option');
+            const monthString = String(month).padStart(2, '0');
+            option.value = monthString;
+            option.text = monthString;
+            monthDropdown.add(option);
+        }
     </script>
 
 

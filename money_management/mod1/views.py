@@ -128,8 +128,12 @@ def create_budget(request):
         if form.is_valid():
             budget = form.save(commit=False)
             
-            # Save the budget_month as a string
-            budget.budget_month = form.cleaned_data['budget_month']
+            # Get month as a string from the form
+            month = form.cleaned_data['budget_month']
+            
+            # Combine year and month to form 'YYYY-MM' format
+            budget.budget_month = month
+            
             budget.user = request.user
             budget.save()
             messages.success(request, 'Budget updated successfully')
@@ -140,13 +144,15 @@ def create_budget(request):
     return render(request, 'budget.html', {'form': form})
 
 
-def show_remaining_budget(request):
+
+
+def show_remaining_budget(request, selected_month):
     if request.method == 'GET':
         user = request.user
-        current_month_budget = Budget.objects.filter(user=user, budget_month='2023-11').first()  # Change '2023-11' to the desired month
+        current_month_budget = Budget.objects.filter(user=user, budget_month=selected_month).first()
 
         if current_month_budget:
-            total_expense = Expense.objects.filter(user=user, date__year=2023, date__month=11).aggregate(Sum('amount'))['amount__sum'] or 0
+            total_expense = Expense.objects.filter(user=user, date__year=current_month_budget.created_at.year, date__month=current_month_budget.created_at.month).aggregate(Sum('amount'))['amount__sum'] or 0
             
             remaining_budget = current_month_budget.target_budget - total_expense
 
@@ -156,5 +162,7 @@ def show_remaining_budget(request):
                 message = f'Budget remaining: {remaining_budget}'
 
             return JsonResponse({'message': message})
+        else:
+            return JsonResponse({'message': f'Budget not found for {selected_month}'})
     else:
         return JsonResponse({'message': 'Invalid request'})

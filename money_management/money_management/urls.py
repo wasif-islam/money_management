@@ -34,7 +34,7 @@ urlpatterns = [
     path('add_expense/', views.add_expense, name='add_expense'),
     path('search_bills/', views.search_bills, name='search_bills'),
     path('create_budget/', views.create_budget, name='create_budget'),
-    path('show_remaining_budget/', views.show_remaining_budget, name='show_remaining_budget'),
+    path('show_remaining_budget/<str:selected_month>/', views.show_remaining_budget, name='show_remaining_budget'),
     
 
 
