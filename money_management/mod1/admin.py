@@ -3,11 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 from django.contrib import admin
-<<<<<<< HEAD
-from .models import CustomUser, CustomBill, CreditCard, BankAccount, Expense
-=======
-from .models import CustomUser, CustomBill, CreditCard, BankAccount
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
+from .models import CustomUser, CustomBill, CreditCard, BankAccount, Expense,Budget
 
 admin.site.register(CustomUser)
 
@@ -24,12 +20,13 @@ class CreditCardAdmin(admin.ModelAdmin):
 
 @admin.register(BankAccount)
 class BankAccountAdmin(admin.ModelAdmin):
-<<<<<<< HEAD
     list_display = ('user', 'account_number', 'bank_name', 'branch_name')
 
 @admin.register(Expense)
 class ExpenseAdmin(admin.ModelAdmin):
-    list_display = ('user', 'category', 'amount', 'description', 'receipt')
-=======
-    list_display = ('user', 'account_number', 'bank_name', 'branch_name')
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
+    list_display = ('user', 'category', 'amount', 'description', 'receipt','date')
+
+@admin.register(Budget)
+class BudgetAdmin(admin.ModelAdmin):
+    list_display = ['user', 'budget_month', 'target_budget', 'created_at']
+

@@ -43,7 +43,6 @@ class BankAccount(models.Model):
     branch_name = models.CharField(max_length=255)
 
     def __str__(self):
-<<<<<<< HEAD
         return f"{self.user.username}'s Bank Account"
 
 class Expense(models.Model):
@@ -52,10 +51,16 @@ class Expense(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
     receipt = models.ImageField(upload_to='expense_receipts/', blank=True, null=True)
-
+    date = models.DateField()
     def __str__(self):
         return f"{self.user.username}'s {self.category} Expense"
     
-=======
-        return f"{self.user.username}'s Bank Account"
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
+
+class Budget(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    budget_month = models.CharField(max_length=7)
+    target_budget = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.budget_month.strftime('%B %Y')}"      
