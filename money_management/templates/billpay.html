@@ -5,7 +5,7 @@
     <title>Bill Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <!-- Add any additional styles or links as needed -->
+
     <style media="screen">
         /* Add your styles here */
         body {
@@ -15,28 +15,21 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 430px;
             margin: 50px auto;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.13);
+            background-color: rgba(255, 255, 255, 0.5);
             border-radius: 10px;
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
         }
 
-        h3 {
-            font-size: 32px;
-            font-weight: 500;
-            line-height: 42px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
+        h1,
+        h3,
         h4 {
-            font-size: 28px;
-            font-weight: 500;
-            line-height: 38px;
+            font-size: 36px;
+            font-weight: 600;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -66,16 +59,20 @@
             margin-bottom: 10px;
         }
 
-        input {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #fff;
             background-color: rgba(255, 255, 255, 0.1);
             color: #fff;
+            margin-bottom: 15px;
         }
 
         button {
+            width: 100%;
             background-color: #ffffff;
             color: #080710;
             padding: 15px 0;
@@ -84,6 +81,27 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        .scheduling-section {
+            margin-top: 30px;
+        }
+
+        .scheduling-section h3 {
+            font-size: 36px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .scheduling-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .scheduling-section li {
+            margin-bottom: 15px;
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -91,35 +109,48 @@
     <div class="container">
         <h4>Bill Retrieval</h4>
 
-        <!-- Linking Accounts Form -->
-        <div class="form-section" id="linking-account-form">
-            <h3>Linking Accounts</h3>
-            <form>
-                <div class="form-group">
-                    <label for="email-link">Want to link your account? Provide your email:</label>
-                    <input type="email" id="email-link" placeholder="Enter your email">
-                </div>
-                <button type="submit">Link Account</button>
+        <!-- Linking Credit Card Form -->
+        <div class="form-section" id="linking-credit-card-form">
+            <h3>Linking Credit Card</h3>
+            <form method="post" action="{% url 'link_credit_card' %}">
+                {% csrf_token %}
+                {{ credit_card_form.as_table }}
+                <button type="submit">Link Credit Card</button>
+            </form>
+        </div>
+
+        <!-- Linking Bank Account Form -->
+        <div class="form-section" id="linking-bank-account-form">
+            <h3>Linking Bank Account</h3>
+            <form method="post" action="{% url 'link_bank_account' %}">
+                {% csrf_token %}
+                {{ bank_account_form.as_table }}
+                <button type="submit">Link Bank Account</button>
             </form>
         </div>
 
         <!-- Manual Entry Form -->
         <div class="form-section" id="manual-entry-form">
             <h3>Manual Entry</h3>
-            <div class="form-group">
-                <label for="bill-name">Bill Name</label>
-                <input type="text" id="bill-name" placeholder="Enter Bill Name">
-            </div>
+            <form method="post" action="{% url 'bill_pay' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="bill-name">Bill Name</label>
+                    <input type="text" id="bill-name" name="bill_name" placeholder="Enter Bill Name">
+                </div>
 
-            <div class="form-group">
-                <label for="amount">Amount</label>
-                <input type="text" id="amount" placeholder="Enter Amount">
-            </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="text" id="amount" name="amount" placeholder="Enter Amount">
+                </div>
 
-            <div class="form-group">
-                <label for="due-date">Due Date</label>
-                <input type="date" id="due-date">
-            </div>
+                <div class="form-group">
+                    <label for="due-date">Due Date</label>
+                    <input type="date" id="due-date" name="due_date">
+                </div>
+
+                <button type="submit">Submit</button>
+            </form>
         </div>
 
         <!-- Categorizing Bill Form -->
@@ -180,14 +211,44 @@
         </div>
 
         <!-- Bill Scheduling -->
-        <h3>Bill Scheduling</h3>
-        <ul>
-            <li>Payment History</li>
-            <li>Download statements</li>
-        </ul>
+        <div class="scheduling-section">
+            <h3>Bill Scheduling</h3>
+            <ul>
+                <li>Payment History</li>
+                <li>Download statements</li>
+            </ul>
+
+            <!-- Additional content for Bill Scheduling can be added here -->
+            <!-- For example: -->
+            <h4>Schedule Future Payments</h4>
+            <form>
+                <div class="form-group">
+                    <label for="scheduled-date">Select Date:</label>
+                    <input type="date" id="scheduled-date" name="scheduled_date">
+                </div>
+                <div class="form-group">
+                    <label for="scheduled-amount">Enter Amount:</label>
+                    <input type="text" id="scheduled-amount" name="scheduled_amount" placeholder="Enter Amount">
+                </div>
+                <button type="submit">Schedule Payment</button>
+            </form>
+        </div>
 
         <!-- Search and Sort History -->
         <h3>Search and Sort History</h3>
+        <form method="get" action="{% url 'search_bills' %}">
+            <div class="form-group">
+                <label for="search-query">Search Bills:</label>
+                <input type="text" id="search-query" name="q" placeholder="Enter search query">
+            </div>
+            <button type="submit">Search</button>
+        </form>
+        <ul>
+            {% for bill in custom_bills %}
+                <li>{{ bill.bill_name }} - Amount: {{ bill.amount }} - Due Date: {{ bill.due_date }}</li>
+            {% endfor %}
+        </ul>
+
     </div>
 </body>
 

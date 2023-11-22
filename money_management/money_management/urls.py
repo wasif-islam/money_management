@@ -18,11 +18,23 @@ from django.contrib import admin
 from django.urls import path
 from mod1 import views
 
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.signup,name='signup'),
+    path('', views.signup, name='signup'),
+    path('signup/',views.signup,name='signup'),
     path('login/',views.loginpage,name='login'),
     path('home/',views.home,name='home'),
     path('logout/',views.logoutpage,name='logout'),
+    path('link_credit_card/', views.link_credit_card, name='link_credit_card'),
+    path('link_bank_account/', views.link_bank_account, name='link_bank_account'),
     path('billpay/', views.billpay, name='bill_pay'),
+    path('budget/', views.budget, name='budget'),
+    path('add_expense/', views.add_expense, name='add_expense'),
+    path('search_bills/', views.search_bills, name='search_bills'),
+    
+
+
 ]

@@ -165,29 +165,29 @@
     </style>
 </head>
 <body>
-<div class="background">
-    <div class="shape"></div>
-    <div class="shape"></div>
-</div>
-<form method="post">
-    <h1>Money Management</h1>
-    <h3>Login Here</h3>
-    {% csrf_token %}
-    <label for="username">Username</label>
-    <input type="text" placeholder="Enter Username" id="username" name="username">
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <h1>Money Management</h1>
+        <h3>Login Here</h3>
+        <label for="username">Username</label>
+        <input type="text" placeholder="Enter Username" id="username" name="username">
 
-    <label for="password">Password</label>
-    <input type="password" placeholder="Password" id="password" name="pass">
-    <button class="password-toggle-button" type="button" id="show-password">Show Password</button>
-    
-    <button type="submit">Log In</button>
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" id="password" name="pass">
+        <button class="password-toggle-button" type="button" id="show-password">Show Password</button>
+        
+        <button type="submit">Log In</button>
     <!-- <input type="button" value=""> -->
     <!-- <div class="social">
       <div class="go"><i class="fab fa-google"></i>  Google</div>
       <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
     </div> -->
-    <a href="{% url 'signup' %}">Create an account</a>
-</form>
+        <a href="{% url 'signup' %}">Create an account</a>
+    </form>
 
 <script>
     document.getElementById("show-password").addEventListener("click", function() {

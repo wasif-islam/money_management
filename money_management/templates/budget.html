@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Budget, Expense, and Goal Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+    <style media="screen">
+        /* Add your styles here */
+        body {
+            background-color: #00CED1;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+        }
+
+        .background {
+            width: 430px;
+            height: 520px;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+        }
+
+        .background .shape {
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        input,
+        progress,
+        file {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        input[type="checkbox"] {
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #ffffff;
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .social {
+            margin-top: 30px;
+            display: flex;
+        }
+
+        .social div {
+            background: red;
+            width: 150px;
+            border-radius: 3px;
+            padding: 5px 10px 10px 5px;
+            background-color: rgba(255, 255, 255, 0.27);
+            color: #eaf0fb;
+            text-align: center;
+        }
+
+        .social div:hover {
+            background-color: rgba(255, 255, 255, 0.47);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Expense Tracking Section -->
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form method="post" action="{% url 'add_expense' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Expense Tracking</h1>
+        <label for="expenseCategory">Expense Category</label>
+        <input type="text" name="expenseCategory" id="expenseCategory" placeholder="Enter expense category">
+
+        <label for="expenseAmount">Expense Amount</label>
+        <input type="number" name="expenseAmount" id="expenseAmount" placeholder="Enter expense amount">
+
+        <label for="expenseDescription">Expense Description</label>
+        <input type="text" name="expenseDescription" id="expenseDescription" placeholder="Enter expense description">
+
+        <label for="expenseReceipt">Attach Receipt</label>
+        <input type="file" name="expenseReceipt" id="expenseReceipt">
+
+        <button type="submit">Add Expense</button>
+    </form>
+
+    <!-- Budget Creation and Monitoring Section -->
+    <form >
+    
+        
+        <h1>Budget Creation and Monitoring</h1>
+        <label for="budgetCategory">Budget Category</label>
+        <input type="text" name="budgetCategory" id="budgetCategory" placeholder="Enter budget category">
+
+        <label for="targetBudget">Target Budget</label>
+        <input type="number" name="targetBudget" id="targetBudget" placeholder="Enter target budget">
+
+        <label for="budgetProgress">Budget Progress</label>
+        <progress id="budgetProgress" value="50" max="100"></progress>
+
+        <label for="overBudgetAlert">Over-Budget Alert</label>
+        <input type="checkbox" name="overBudgetAlert" id="overBudgetAlert">
+
+        <button type="submit">Create Budget</button>
+    </form>
+
+    <!-- Goal Setting & Tracking Section -->
+    <form >
+      
+        <h1>Goal Setting & Tracking</h1>
+        <label for="goalDescription">Goal Description</label>
+        <input type="text" name="goalDescription" id="goalDescription" placeholder="Enter goal description">
+
+        <label for="goalProgress">Goal Progress</label>
+        <progress id="goalProgress" value="30" max="100"></progress>
+
+        <label for="savingsGoalAlert">Savings Goal Alert</label>
+        <input type="checkbox" name="savingsGoalAlert" id="savingsGoalAlert">
+
+        <button type="submit">Create Goal</button>
+    </form>
+
+    <!-- Irregular Expense Alerts/Reports Section -->
+    <div class="social">
+        <div class="fb">
+            <i class="fas fa-bell"></i> Irregular Expense Alerts
+        </div>
+    </div>
+</body>
+
+</html>

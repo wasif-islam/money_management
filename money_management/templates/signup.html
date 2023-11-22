@@ -139,7 +139,7 @@ button{
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form action="" method="post">
+    <form action="{% url 'signup' %}" method="post">
         {% csrf_token %} 
         <h3>Signup Here</h3>
 
@@ -148,6 +148,9 @@ button{
 
         <label for="email">Email</label>
         <input type="email" placeholder="Email " name="email" id="email">
+
+        <label for="phone">Phone</label>
+        <input type="text" placeholder="Phone" name="phone" id="phone"> 
 
         <label for="password1">Password</label>
         <input type="password" placeholder="Password" id="password1" name="password1">
