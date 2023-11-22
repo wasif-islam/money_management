@@ -5,7 +5,11 @@
     <title>Bill Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
     <style media="screen">
         /* Add your styles here */
         body {
@@ -116,6 +120,19 @@
                 {% csrf_token %}
                 {{ credit_card_form.as_table }}
                 <button type="submit">Link Credit Card</button>
+<<<<<<< HEAD
+            </form>
+        </div>
+
+        <!-- Linking Bank Account Form -->
+        <div class="form-section" id="linking-bank-account-form">
+            <h3>Linking Bank Account</h3>
+            <form method="post" action="{% url 'link_bank_account' %}">
+                {% csrf_token %}
+                {{ bank_account_form.as_table }}
+                <button type="submit">Link Bank Account</button>
+=======
+>>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
             </form>
         </div>
 
@@ -128,7 +145,7 @@
                 <button type="submit">Link Bank Account</button>
             </form>
         </div>
-
+        
         <!-- Manual Entry Form -->
         <div class="form-section" id="manual-entry-form">
             <h3>Manual Entry</h3>
@@ -236,6 +253,7 @@
 
         <!-- Search and Sort History -->
         <h3>Search and Sort History</h3>
+<<<<<<< HEAD
         <form method="get" action="{% url 'search_bills' %}">
             <div class="form-group">
                 <label for="search-query">Search Bills:</label>
@@ -253,3 +271,64 @@
 </body>
 
 </html>
+=======
+        
+        
+        <div class="container">
+            <!-- Your existing content -->
+    
+            <!-- Bill Scheduling -->
+            <div class="scheduling-section">
+                <h3>Bill Scheduling</h3>
+                <ul>
+                    <li>Payment History</li>
+                    <li>Download statements</li>
+                </ul>
+    
+                <!-- Additional content for Bill Scheduling can be added here -->
+                <!-- For example: -->
+                <h4>Schedule Future Payments</h4>
+                <form>
+                    <div class="form-group">
+                        <label for="scheduled-date">Select Date:</label>
+                        <input type="date" id="scheduled-date" name="scheduled_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduled-amount">Enter Amount:</label>
+                        <input type="text" id="scheduled-amount" name="scheduled_amount" placeholder="Enter Amount">
+                    </div>
+                    <button type="submit">Schedule Payment</button>
+                </form>
+            </div>
+    
+            <!-- Search and Sort History -->
+            <h3>Search and Sort History</h3>
+        </div>
+        <style media="screen">
+            /* Add your styles for the new section here */
+            .scheduling-section {
+                margin-top: 30px;
+            }
+    
+            .scheduling-section h3 {
+                font-size: 32px;
+                font-weight: 500;
+                line-height: 42px;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            .scheduling-section ul {
+                list-style-type: none;
+                padding: 0;
+            }
+    
+            .scheduling-section li {
+                margin-bottom: 15px;
+                color: #fff;
+            }
+        </style>
+    </body>
+    
+    </html>
+>>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d

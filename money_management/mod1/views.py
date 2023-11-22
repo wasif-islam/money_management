@@ -8,12 +8,15 @@ from .forms import CustomBillForm
 from .models import CreditCard
 from .forms import CreditCardForm
 from .forms import BankAccountForm
+<<<<<<< HEAD
 from .models import Expense
 from .forms import ExpenseForm
 
 
 
 
+=======
+>>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
 # Create your views here.
 @login_required(login_url='login')
 def home(request):
@@ -91,6 +94,7 @@ def link_bank_account(request):
     else:
         form = BankAccountForm()
 
+<<<<<<< HEAD
     return render(request, 'billpay.html', {'bank_account_form': form})  
 def budget(request):
     return render(request, 'budget.html')
@@ -119,3 +123,6 @@ def search_bills(request):
     custom_bills = CustomBill.objects.filter(bill_name__icontains=query)
     return render(request, 'billpay.html', {'custom_bills': custom_bills})
 
+=======
+    return render(request, 'billpay.html', {'bank_account_form': form})  
+>>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d

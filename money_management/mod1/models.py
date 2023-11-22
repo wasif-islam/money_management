@@ -43,6 +43,7 @@ class BankAccount(models.Model):
     branch_name = models.CharField(max_length=255)
 
     def __str__(self):
+<<<<<<< HEAD
         return f"{self.user.username}'s Bank Account"
 
 class Expense(models.Model):
@@ -55,3 +56,6 @@ class Expense(models.Model):
     def __str__(self):
         return f"{self.user.username}'s {self.category} Expense"
     
+=======
+        return f"{self.user.username}'s Bank Account"
+>>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
