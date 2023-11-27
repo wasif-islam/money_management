@@ -1,0 +1,77 @@
+<!-- investment_page.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stocks Investment Page</title>
+    <style>
+        /* Add some basic styling for the stock buttons */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        li {
+            margin: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            padding: 10px;
+            background-color: #3498db;
+            color: #ffffff;
+            border-radius: 5px;
+            display: block;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #2980b9;
+        }
+        .stock-info {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Stocks Investment Page</h1>
+    
+    <!-- Display stock buttons in rows -->
+    <ul>
+        {% for stock_info in stock_info_list %}
+            <li>
+                <a href="{% url 'stock_detail' stock_symbol=stock_info.symbol %}">
+                    {{ stock_info.symbol }}
+                </a>
+                <div class="stock-info">
+                    <p>
+                        Latest Price: ${{ stock_info.latest_price|stringformat:".3f" }}   <!--Shows the latest price-->
+                    </p>
+                    <p>
+                        {% if stock_info.price_change is not None %}
+                            {% if stock_info.price_change > 0 %}    
+                                Change: +${{ stock_info.price_change|stringformat:".3f" }} &#8593; <!--shows diff of price using arrows (unicode)-->
+                            {% elif stock_info.price_change < 0 %} 
+                                Change: -${{ stock_info.price_change|stringformat:".3f" }} &#8595;
+                            {% else %}
+                                No Change
+                            {% endif %}
+                        {% else %}
+                            Change: N/A
+                        {% endif %}
+                    </p>                    
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

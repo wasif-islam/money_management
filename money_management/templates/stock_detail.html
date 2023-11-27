@@ -1,0 +1,55 @@
+<!-- templates/stock_detail.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ stock_symbol }} Stock Detail</title>
+    <!-- Include Plotly CDN (replace with your preferred version) -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>{{ stock_symbol }} Stock Detail</h1>
+    
+    <!-- Display stock data here -->
+
+    <form action="{% url 'stock_detail' stock_symbol=stock_symbol %}" method="get">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}" required>
+        
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}" required>
+        
+        <button type="submit">Update Chart</button>
+    </form>
+
+    <!-- Include Plotly graph -->
+    <div id="stockChart"></div>
+
+    <script>
+        var dates = {{ dates|safe }};
+        var prices = {{ prices|safe }};
+
+        var trace = {
+            x: dates,
+            y: prices,
+            type: 'scatter',
+            mode: 'lines',
+            name: '{{ stock_symbol }} Stock Price'
+        };
+
+        var layout = {
+            title: '{{ stock_symbol }} Stock Price History',
+            xaxis: {
+                title: 'Date'
+            },
+            yaxis: {
+                title: 'Stock Price'
+            }
+        };
+
+        Plotly.newPlot('stockChart', [trace], layout);
+    </script>
+</body>
+</html>
