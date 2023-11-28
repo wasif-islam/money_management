@@ -8,15 +8,13 @@ from .forms import CustomBillForm
 from .models import CreditCard
 from .forms import CreditCardForm
 from .forms import BankAccountForm
-<<<<<<< HEAD
-from .models import Expense
-from .forms import ExpenseForm
+from .models import Expense,Budget
+from .forms import ExpenseForm,BudgetForm
+from django.contrib import messages
+from datetime import datetime
+from django.db.models import Sum
+from django.http import JsonResponse
 
-
-
-
-=======
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
 # Create your views here.
 @login_required(login_url='login')
 def home(request):
@@ -94,7 +92,6 @@ def link_bank_account(request):
     else:
         form = BankAccountForm()
 
-<<<<<<< HEAD
     return render(request, 'billpay.html', {'bank_account_form': form})  
 def budget(request):
     return render(request, 'budget.html')
@@ -107,11 +104,12 @@ def add_expense(request):
             expense = form.save(commit=False)
             expense.user = request.user  # Set the user field
             expense.save()
-            return redirect('success_page')
+            messages.success(request, 'Expense Added Successfully')
+            return redirect('budget')
         else:
             # Print form errors for debugging
-            print(form.errors)
-            return render(request, 'budget.html', {'form': form, 'error_message': 'Invalid form data'})
+            messages.error(request, 'Invalid form data. Please check the fields.')
+            return redirect('budget')
 
     else:
         form = ExpenseForm()
@@ -123,6 +121,48 @@ def search_bills(request):
     custom_bills = CustomBill.objects.filter(bill_name__icontains=query)
     return render(request, 'billpay.html', {'custom_bills': custom_bills})
 
-=======
-    return render(request, 'billpay.html', {'bank_account_form': form})  
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
+
+def create_budget(request):
+    if request.method == 'POST':
+        form = BudgetForm(request.POST)
+        if form.is_valid():
+            budget = form.save(commit=False)
+            
+            # Get month as a string from the form
+            month = form.cleaned_data['budget_month']
+            
+            # Combine year and month to form 'YYYY-MM' format
+            budget.budget_month = month
+            
+            budget.user = request.user
+            budget.save()
+            messages.success(request, 'Budget updated successfully')
+            return redirect(request.path_info)  # Redirect to the same page
+    else:
+        form = BudgetForm()
+
+    return render(request, 'budget.html', {'form': form})
+
+
+
+
+def show_remaining_budget(request, selected_month):
+    if request.method == 'GET':
+        user = request.user
+        current_month_budget = Budget.objects.filter(user=user, budget_month=selected_month).first()
+
+        if current_month_budget:
+            total_expense = Expense.objects.filter(user=user, date__year=current_month_budget.created_at.year, date__month=current_month_budget.created_at.month).aggregate(Sum('amount'))['amount__sum'] or 0
+            
+            remaining_budget = current_month_budget.target_budget - total_expense
+
+            if remaining_budget < 0:
+                message = f'You have gone over budget by {abs(remaining_budget)}'
+            else:
+                message = f'Budget remaining: {remaining_budget}'
+
+            return JsonResponse({'message': message})
+        else:
+            return JsonResponse({'message': f'Budget not found for {selected_month}'})
+    else:
+        return JsonResponse({'message': 'Invalid request'})

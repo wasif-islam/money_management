@@ -1,0 +1,123 @@
+<!-- templates/stock_detail.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ stock_symbol }} Stock Detail</title>
+    <style>
+        /* Add your styles here */
+        body {
+            background-color: #00CED1;
+            font-family: 'Poppins', sans-serif;
+            color: #000000; /* Change text color to black */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            justify-content: center; /* Center content vertically */
+            height: 100vh; /* Make the body take the full height of the viewport */
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 500px;
+            margin: auto;
+            padding: 50px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+            backdrop-filter: blur(200px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #000000; /* Change text color to black */
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #ffffff;
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #stockChart {
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style>
+    <!-- Include Plotly CDN (replace with your preferred version) -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <h1>{{ stock_symbol }} Stock Detail</h1>
+
+    <!-- Display stock data here -->
+
+    <form action="{% url 'stock_detail' stock_symbol=stock_symbol %}" method="get">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}" required>
+
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}" required>
+
+        <button type="submit">Update Chart</button>
+    </form>
+
+    <!-- Include Plotly graph -->
+    <div id="stockChart"></div>
+
+    <script>
+        var dates = {{ dates|safe }};
+        var prices = {{ prices|safe }};
+
+        var trace = {
+            x: dates,
+            y: prices,
+            type: 'scatter',
+            mode: 'lines',
+            name: '{{ stock_symbol }} Stock Price'
+        };
+
+        var layout = {
+            title: '{{ stock_symbol }} Stock Price History',
+            xaxis: {
+                title: 'Date'
+            },
+            yaxis: {
+                title: 'Stock Price'
+            }
+        };
+
+        Plotly.newPlot('stockChart', [trace], layout);
+    </script>
+</body>
+
+</html>

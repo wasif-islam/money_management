@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mod1',
+    'mod4',
 ]
 AUTH_USER_MODEL = 'mod1.CustomUser'
 MIDDLEWARE = [

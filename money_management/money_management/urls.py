@@ -17,8 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from mod1 import views
-
-
+from mod4 import views as mod4_views
 
 
 urlpatterns = [
@@ -34,6 +33,11 @@ urlpatterns = [
     path('budget/', views.budget, name='budget'),
     path('add_expense/', views.add_expense, name='add_expense'),
     path('search_bills/', views.search_bills, name='search_bills'),
+    path('create_budget/', views.create_budget, name='create_budget'),
+    path('investments/', mod4_views.investment_page, name='investment_page'),
+    path('show_remaining_budget/<str:selected_month>/', views.show_remaining_budget, name='show_remaining_budget'),
+    path('investments/', mod4_views.investment_page, name='investment_page'),
+    path('stock/<str:stock_symbol>/', mod4_views.stock_detail, name='stock_detail'),
     
 
 

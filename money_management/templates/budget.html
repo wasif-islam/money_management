@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
 
 <head>
     <title>Budget, Expense, and Goal Tracker</title>
@@ -13,26 +12,6 @@
             background-color: #00CED1;
             font-family: 'Poppins', sans-serif;
             color: #ffffff;
-=======
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <style media="screen">
-        *,
-        *:before,
-        *:after {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #00CED1; /* Turquoise Green */
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
         }
 
         .background {
@@ -51,46 +30,15 @@
             border-radius: 50%;
         }
 
-<<<<<<< HEAD
         form {
             max-width: 400px;
             margin: 50px auto;
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.5);
-=======
-        .shape:first-child {
-            background: linear-gradient(
-                #1845ad,
-                #23a2f6
-            );
-            left: -80px;
-            top: -80px;
-        }
-
-        .shape:last-child {
-            background: linear-gradient(
-                to right,
-                #ff512f,
-                #f09819
-            );
-            right: -30px;
-            bottom: -80px;
-        }
-
-        form {
-            height: 520px;
-            width: 400px;
-            background-color: rgba(255, 255, 255, 0.5);
-            position: absolute;
-            transform: translate(-50%, -50%);
-            top: 50%;
-            left: 50%;
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
             border-radius: 10px;
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-<<<<<<< HEAD
         }
 
         h1 {
@@ -98,36 +46,10 @@
             font-weight: 600;
             text-align: center;
             margin-bottom: 20px;
-=======
-            padding: 50px 35px;
-        }
-
-        form * {
-            font-family: 'Poppins', sans-serif;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-            outline: none;
-            border: none;
-        }
-
-        form h1 {
-            font-size: 36px; /* Increased font size for "Money Management" */
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        form h3 {
-            font-size: 32px;
-            font-weight: 500;
-            line-height: 42px;
-            text-align: center;
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
         }
 
         label {
             display: block;
-<<<<<<< HEAD
             font-size: 18px;
             font-weight: 500;
             margin-bottom: 10px;
@@ -153,42 +75,6 @@
             width: 100%;
             background-color: #ffffff;
             color: #080710;
-=======
-            margin-top: 20px; /* Adjusted margin-top */
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        input {
-            display: block;
-            height: 50px;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.07);
-            border-radius: 3px;
-            padding: 0 10px;
-            margin-top: 8px;
-            font-size: 14px;
-            font-weight: 300;
-        }
-
-        .password-toggle-button {
-            background-color: transparent;
-            border: none;
-            color: #ffffff;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        ::placeholder {
-            color: #e5e5e5;
-        }
-
-        button {
-            margin-top: 50px;
-            width: 100%;
-            background-color: #ffffff;
-            color: #00CED1; /* Turquoise Green */
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
             padding: 15px 0;
             font-size: 18px;
             font-weight: 600;
@@ -214,98 +100,92 @@
         .social div:hover {
             background-color: rgba(255, 255, 255, 0.47);
         }
-<<<<<<< HEAD
     </style>
 </head>
 
 <body>
-=======
-
-        .social .fb {
-            margin-left: 25px;
-        }
-
-        .social i {
-            margin-right: 4px;
-        }
-    </style>
-    <title>Financial Management</title>
-</head>
-<body>
-
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
+    <!-- Add this section to display messages -->
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
     <!-- Expense Tracking Section -->
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-<<<<<<< HEAD
     <form method="post" action="{% url 'add_expense' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <h1>Expense Tracking</h1>
-        <label for="expenseCategory">Expense Category</label>
-        <input type="text" name="expenseCategory" id="expenseCategory" placeholder="Enter expense category">
+        
+        <label for="id_category">Expense Category</label>
+        <input type="text" name="category" id="id_category" placeholder="Enter expense category">
+    
+        <label for="id_amount">Expense Amount</label>
+        <input type="number" name="amount" id="id_amount" placeholder="Enter expense amount">
+    
+        <label for="id_description">Expense Description</label>
+        <input type="text" name="description" id="id_description" placeholder="Enter expense description">
+    
+        <label for="id_receipt">Attach Receipt</label>
+        <input type="file" name="receipt" id="id_receipt">
 
-        <label for="expenseAmount">Expense Amount</label>
-        <input type="number" name="expenseAmount" id="expenseAmount" placeholder="Enter expense amount">
-
-        <label for="expenseDescription">Expense Description</label>
-        <input type="text" name="expenseDescription" id="expenseDescription" placeholder="Enter expense description">
-
-        <label for="expenseReceipt">Attach Receipt</label>
-        <input type="file" name="expenseReceipt" id="expenseReceipt">
-
+        <label for="id_date">Expense Date</label>
+        <input type="date" name="date" id="id_date">
+    
         <button type="submit">Add Expense</button>
     </form>
 
     <!-- Budget Creation and Monitoring Section -->
-    <form >
-    
-        
+    <form method="post" action="{% url 'create_budget' %}">
+        {% csrf_token %}
         <h1>Budget Creation and Monitoring</h1>
-        <label for="budgetCategory">Budget Category</label>
-        <input type="text" name="budgetCategory" id="budgetCategory" placeholder="Enter budget category">
 
-        <label for="targetBudget">Target Budget</label>
-        <input type="number" name="targetBudget" id="targetBudget" placeholder="Enter target budget">
-=======
+        <label for="id_budget_month">Budget Month</label>
+        <input type="text" name="budget_month" id="id_budget_month" placeholder="Enter budget month" required>
 
-    <form>
-        <h1>Expense Tracking</h1>
-        <label for="expenseCategory">Expense Category</label>
-        <input type="text" id="expenseCategory" placeholder="Enter expense category">
-
-        <label for="expenseAmount">Expense Amount</label>
-        <input type="number" id="expenseAmount" placeholder="Enter expense amount">
-
-        <label for="expenseDescription">Expense Description</label>
-        <input type="text" id="expenseDescription" placeholder="Enter expense description">
-
-        <label for="expenseReceipt">Attach Receipt</label>
-        <input type="file" id="expenseReceipt">
-
-        <button>Add Expense</button>
-    </form>
-
-    <!-- Budget Creation and Monitoring Section -->
-    <form>
-        <h1>Budget Creation and Monitoring</h1>
-        <label for="budgetCategory">Budget Category</label>
-        <input type="text" id="budgetCategory" placeholder="Enter budget category">
-
-        <label for="targetBudget">Target Budget</label>
-        <input type="number" id="targetBudget" placeholder="Enter target budget">
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
-
-        <label for="budgetProgress">Budget Progress</label>
-        <progress id="budgetProgress" value="50" max="100"></progress>
-
-        <label for="overBudgetAlert">Over-Budget Alert</label>
-<<<<<<< HEAD
-        <input type="checkbox" name="overBudgetAlert" id="overBudgetAlert">
+        <label for="id_target_budget">Target Budget</label>
+        <input type="number" name="target_budget" id="id_target_budget" placeholder="Enter target budget" required>
 
         <button type="submit">Create Budget</button>
     </form>
+
+    <!-- Show Remaining Budget Section -->
+    <label for="budgetMonth">Select Month:</label>
+    <select id="budgetMonth">
+        <!-- JavaScript will dynamically populate options here -->
+    </select>
+    <button id="showRemainingBudget">Show Remaining Budget</button>
+    <div id="remainingBudgetMessage"></div>
+
+    <script>
+        // Add this script to your HTML file to handle the button click
+        document.getElementById('showRemainingBudget').addEventListener('click', function () {
+            // Get the selected month from the dropdown
+            const selectedMonth = document.getElementById('budgetMonth').value;
+
+            // Make the AJAX request with the selected month
+            fetch(`/show_remaining_budget/${selectedMonth}/`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('remainingBudgetMessage').innerText = data.message;
+                });
+        });
+
+        // Dynamically populate the month dropdown with a range of months
+        const monthDropdown = document.getElementById('budgetMonth');
+        for (let month = 1; month <= 12; month++) {
+            const option = document.createElement('option');
+            const monthString = String(month).padStart(2, '0');
+            option.value = monthString;
+            option.text = monthString;
+            monthDropdown.add(option);
+        }
+    </script>
+
 
     <!-- Goal Setting & Tracking Section -->
     <form >
@@ -313,32 +193,14 @@
         <h1>Goal Setting & Tracking</h1>
         <label for="goalDescription">Goal Description</label>
         <input type="text" name="goalDescription" id="goalDescription" placeholder="Enter goal description">
-=======
-        <input type="checkbox" id="overBudgetAlert">
-
-        <button>Create Budget</button>
-    </form>
-
-    <!-- Goal Setting & Tracking Section -->
-    <form>
-        <h1>Goal Setting & Tracking</h1>
-        <label for="goalDescription">Goal Description</label>
-        <input type="text" id="goalDescription" placeholder="Enter goal description">
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
 
         <label for="goalProgress">Goal Progress</label>
         <progress id="goalProgress" value="30" max="100"></progress>
 
         <label for="savingsGoalAlert">Savings Goal Alert</label>
-<<<<<<< HEAD
         <input type="checkbox" name="savingsGoalAlert" id="savingsGoalAlert">
 
         <button type="submit">Create Goal</button>
-=======
-        <input type="checkbox" id="savingsGoalAlert">
-
-        <button>Create Goal</button>
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
     </form>
 
     <!-- Irregular Expense Alerts/Reports Section -->
@@ -347,11 +209,6 @@
             <i class="fas fa-bell"></i> Irregular Expense Alerts
         </div>
     </div>
-<<<<<<< HEAD
 </body>
 
-=======
-
-</body>
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
 </html>

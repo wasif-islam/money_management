@@ -48,7 +48,7 @@
         }
 
         .form-check-input {
-            margin-right: 0px; /* Adjust as needed */
+            margin-right: 10px; /* Adjusted margin-right */
             transform: scale(0.4);
         }
 
@@ -65,6 +65,7 @@
             box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
             padding: 20px;
             color: #ffffff;
+            text-align: center;
         }
 
         .form-group {
@@ -89,27 +90,17 @@
             color: #ffffff;
         }
 
-        button {
+        button,
+        a.btn {
             width: 100%;
-            background-color: #ffffff;
-            color: #00CED1; /* Turquoise Green */
             padding: 10px;
             font-size: 16px;
             font-weight: 600;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px; /* Add margin to separate buttons */
-        }
-
-        .btn-success,
-        .btn-primary {
-            margin-top: 10px;
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 5px;
-            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-success {
@@ -168,12 +159,10 @@
     
     <!-- Bill Pay Button -->
     <a href="{% url 'bill_pay' %}" class="btn btn-success">Bill Pay</a>
-<<<<<<< HEAD
     <!-- Budget Tracker Button -->
-    <a href="{% url 'budget' %}" class="btn btn-primary">Budget Tracker</a>
-=======
-    
->>>>>>> c35eadc36f8459db6a107c32af42c8938f2c223d
+    <a href="{% url 'create_budget' %}" class="btn btn-primary">Budget Tracker</a>
+    <!-- Investments Button -->
+    <a href="{% url 'investment_page' %}" class="btn btn-primary">Investments</a>
     <!-- Logout Button -->
     <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
 </section>

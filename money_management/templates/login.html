@@ -1,3 +1,5 @@
+<!-- Login Page -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <!--Stylesheet-->
+
+    <!-- Stylesheet -->
     <style media="screen">
         *,
         *:before,
@@ -69,6 +72,10 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
             padding: 50px 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         form * {
@@ -118,6 +125,7 @@
             color: #ffffff;
             cursor: pointer;
             font-size: 18px;
+            margin-top: 10px; /* Adjusted margin-top */
         }
 
         ::placeholder {
@@ -125,7 +133,7 @@
         }
 
         button {
-            margin-top: 50px;
+            margin-top: 20px; /* Adjusted margin-top */
             width: 100%;
             background-color: #ffffff;
             color: #00CED1; /* Turquoise Green */
@@ -137,8 +145,9 @@
         }
 
         .social {
-            margin-top: 30px;
+            margin-top: 20px; /* Adjusted margin-top */
             display: flex;
+            justify-content: space-around;
         }
 
         .social div {
@@ -181,11 +190,7 @@
         <button class="password-toggle-button" type="button" id="show-password">Show Password</button>
         
         <button type="submit">Log In</button>
-    <!-- <input type="button" value=""> -->
-    <!-- <div class="social">
-      <div class="go"><i class="fab fa-google"></i>  Google</div>
-      <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
-    </div> -->
+
         <a href="{% url 'signup' %}">Create an account</a>
     </form>
 
