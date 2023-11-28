@@ -2,11 +2,15 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
 
+=======
+>>>>>>> dea63aca8df32e6d73a6cfdeaf274fe6d166533f
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ stock_symbol }} Stock Detail</title>
+<<<<<<< HEAD
     <style>
         /* Add your styles here */
         body {
@@ -79,15 +83,30 @@
 <body>
     <h1>{{ stock_symbol }} Stock Detail</h1>
 
+=======
+    <!-- Include Plotly CDN (replace with your preferred version) -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>{{ stock_symbol }} Stock Detail</h1>
+    
+>>>>>>> dea63aca8df32e6d73a6cfdeaf274fe6d166533f
     <!-- Display stock data here -->
 
     <form action="{% url 'stock_detail' stock_symbol=stock_symbol %}" method="get">
         <label for="start_date">Start Date:</label>
         <input type="date" id="start_date" name="start_date" value="{{ start_date }}" required>
+<<<<<<< HEAD
 
         <label for="end_date">End Date:</label>
         <input type="date" id="end_date" name="end_date" value="{{ end_date }}" required>
 
+=======
+        
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}" required>
+        
+>>>>>>> dea63aca8df32e6d73a6cfdeaf274fe6d166533f
         <button type="submit">Update Chart</button>
     </form>
 
@@ -119,5 +138,8 @@
         Plotly.newPlot('stockChart', [trace], layout);
     </script>
 </body>
+<<<<<<< HEAD
 
+=======
+>>>>>>> dea63aca8df32e6d73a6cfdeaf274fe6d166533f
 </html>
