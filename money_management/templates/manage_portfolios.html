@@ -1,0 +1,96 @@
+<!-- investments/templates/investments/manage_portfolios.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Investment Portfolios</title>
+    <style>
+        /* Add your styles here */
+        body {
+            background-color: #00CED1;
+            font-family: 'Poppins', sans-serif;
+            color: #000000; /* Change text color to black */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            justify-content: center; /* Center content vertically */
+            height: 100vh; /* Make the body take the full height of the viewport */
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        div {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(8, 7, 16, 0.6);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #ffffff;
+            color: #080710;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #080710;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Investment Portfolios</h1>
+
+    <!-- Dummy Buy Stocks Button -->
+    <div>
+        <button onclick="buyStocks()">Buy Stocks</button>
+    </div>
+
+    <!-- Display User's Stock Portfolio -->
+    <div>
+        <h2>Your Stock Portfolio</h2>
+        <ul>
+            <!-- Display a list of user's stocks with dummy data -->
+            <li>Stock: ABC | Quantity: 10</li>
+            <li>Stock: XYZ | Quantity: 5</li>
+            <!-- Add more stock items dynamically if needed -->
+        </ul>
+    </div>
+
+    <script>
+        function buyStocks() {
+            // Simulate buying stocks (reset stock count to zero)
+            alert('Stocks bought successfully!');
+            // You can add any other logic here to simulate the buying process
+            // For now, let's just display an alert
+        }
+    </script>
+
+    <!-- Add any additional features or content as needed -->
+
+</body>
+</html>

@@ -42,7 +42,9 @@ urlpatterns = [
     path('gain_loss_calculation/<str:stock_symbol>/', mod4_views.gain_loss_calculation, name='gain_loss_calculation'),
     path('historical_data_trend_analysis/<str:stock_symbol>/', mod4_views.historical_data_trend_analysis, name='historical_data_trend_analysis'),
     path('record_transaction/', mod4_views.record_transaction, name='record_transaction'),
+    #path('automatic_transaction_updates/', mod4_views.automatic_transaction_updates, name='automatic_transaction_updates'),
     path('dividend_tracking/', mod4_views.dividend_tracking, name='dividend_tracking'),
-
+    path('manage_portfolios/', mod4_views.manage_portfolios, name='manage_portfolios'),
+    path('market_news/', mod4_views.market_news, name='market_news'),
 
 ]

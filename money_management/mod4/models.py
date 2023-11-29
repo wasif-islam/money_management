@@ -29,8 +29,6 @@ class TransactionUpdate(models.Model):
     update_date = models.DateField(auto_now_add=True)
 
 class AutomaticTransaction(models.Model):
-    # Your model fields go here
-    # Example:
     stock = models.ForeignKey('Stock', on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Use your custom user model
     transaction_type = models.CharField(max_length=10)

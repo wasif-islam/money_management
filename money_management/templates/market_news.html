@@ -1,0 +1,71 @@
+<!-- investments/templates/investments/market_news.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market News</title>
+    <style>
+        /* Add your styles here */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .article {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .article p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .article a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .article a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Market News</h1>
+
+    <!-- Display news articles -->
+    {% for article in articles %}
+    <div class="article">
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.description }}</p>
+        <a href="{{ article.url }}" target="_blank">Read more</a>
+    </div>
+    {% endfor %}
+
+    <!-- Add any additional features or content as needed -->
+
+</body>
+</html>
