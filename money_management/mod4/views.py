@@ -63,11 +63,11 @@ def stock_detail(request, stock_symbol):
 def investment_analysis(request, stock_symbol):
     stock = yf.Ticker(stock_symbol)
     
-    # Get historical data
+    
     history = stock.history(period='1d')  # Adjust the period as needed
     current_value = history['Close'].iloc[-1]  # Latest closing price
     
-    # Placeholder initial investment
+    
     initial_investment = 1000
     
     return render(request, 'investment_analysis.html', {'initial_investment': initial_investment, 'current_value': current_value, 'stock_symbol': stock_symbol})
@@ -75,11 +75,11 @@ def investment_analysis(request, stock_symbol):
 def gain_loss_calculation(request, stock_symbol):
     stock = yf.Ticker(stock_symbol)
     
-    # Get historical data
-    history = stock.history(period='1d')  # Adjust the period as needed
-    current_value = history['Close'].iloc[-1]  # Latest closing price
     
-    # Placeholder initial investment
+    history = stock.history(period='1d')  
+    current_value = history['Close'].iloc[-1]  
+    
+    
     initial_investment = 1000
     
     gain_loss = current_value - initial_investment
@@ -88,11 +88,11 @@ def gain_loss_calculation(request, stock_symbol):
 
 def historical_data_trend_analysis(request, stock_symbol):
     try:
-        # Fetch historical stock data using yfinance
+       
         stock = yf.Ticker(stock_symbol)
-        history = stock.history(period='1y')  # Adjust the period as needed
+        history = stock.history(period='1y')  
 
-        # Check if the DataFrame is empty
+        
         if history.empty:
             raise Exception("No historical data available for the specified stock.")
 
