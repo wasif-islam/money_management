@@ -2,15 +2,10 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-
-=======
->>>>>>> dea63aca8df32e6d73a6cfdeaf274fe6d166533f
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stocks Investment Page</title>
-<<<<<<< HEAD
     {% block styles %}
     <style>
         /* Add some basic styling for the stock buttons */
@@ -25,10 +20,6 @@
             height: 100vh; /* Make the body take the full height of the viewport */
         }
 
-=======
-    <style>
-        /* Add some basic styling for the stock buttons */
->>>>>>> dea63aca8df32e6d73a6cfdeaf274fe6d166533f
         ul {
             list-style-type: none;
             padding: 0;
@@ -54,17 +45,12 @@
         a:hover {
             background-color: #2980b9;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> dea63aca8df32e6d73a6cfdeaf274fe6d166533f
         .stock-info {
             margin-top: 10px;
             padding: 10px;
             background-color: #ecf0f1;
             border-radius: 5px;
             text-align: center;
-<<<<<<< HEAD
             color: #000000; /* Change text color to black */
         }
 
@@ -105,47 +91,21 @@
                     Change: N/A
                     {% endif %}
                 </p>
+                <!-- Add buttons to go to the new pages -->
+                <a href="{% url 'investment_analysis' stock_symbol=stock_info.symbol %}">Investment Analysis</a>
+                <a href="{% url 'gain_loss_calculation' stock_symbol=stock_info.symbol %}">Gain/Loss Calculation</a>
+                <a href="{% url 'historical_data_trend_analysis' stock_symbol=stock_info.symbol %}">Historical Data Trend Analysis</a>
+
+                <a href="{% url 'record_transaction' %}">Record Transaction</a>
+            <!-- Add link to automatic_transaction_updates.html -->
+            
+            <!-- Add link to dividend_tracking.html -->
+                <a href="{% url 'dividend_tracking' %}">Dividend Tracking</a>
+                
             </div>
         </li>
         {% endfor %}
     </ul>
-</body>
+</body> 
 
-=======
-        }
-    </style>
-</head>
-<body>
-    <h1>Stocks Investment Page</h1>
-    
-    <!-- Display stock buttons in rows -->
-    <ul>
-        {% for stock_info in stock_info_list %}
-            <li>
-                <a href="{% url 'stock_detail' stock_symbol=stock_info.symbol %}">
-                    {{ stock_info.symbol }}
-                </a>
-                <div class="stock-info">
-                    <p>
-                        Latest Price: ${{ stock_info.latest_price|stringformat:".3f" }}   <!--Shows the latest price-->
-                    </p>
-                    <p>
-                        {% if stock_info.price_change is not None %}
-                            {% if stock_info.price_change > 0 %}    
-                                Change: +${{ stock_info.price_change|stringformat:".3f" }} &#8593; <!--shows diff of price using arrows (unicode)-->
-                            {% elif stock_info.price_change < 0 %} 
-                                Change: -${{ stock_info.price_change|stringformat:".3f" }} &#8595;
-                            {% else %}
-                                No Change
-                            {% endif %}
-                        {% else %}
-                            Change: N/A
-                        {% endif %}
-                    </p>                    
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
->>>>>>> dea63aca8df32e6d73a6cfdeaf274fe6d166533f
 </html>

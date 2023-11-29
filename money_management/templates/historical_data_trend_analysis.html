@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Historical Data Trend Analysis</title>
+    <style media="screen">
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #00CED1; /* Turquoise Green */
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #historicalChart {
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>Historical Data Trend Analysis for {{ stock_symbol }}</h1>
+
+        {% if dates and prices %}
+            <div id="historicalChart"></div>
+
+            <script>
+                var dates = {{ dates|safe }};
+                var prices = {{ prices|safe }};
+
+                var trace = {
+                    x: dates,
+                    y: prices,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '{{ stock_symbol }} Stock Price'
+                };
+
+                var layout = {
+                    title: '{{ stock_symbol }} Historical Stock Price Trend',
+                    xaxis: {
+                        title: 'Date'
+                    },
+                    yaxis: {
+                        title: 'Stock Price'
+                    }
+                };
+
+                Plotly.newPlot('historicalChart', [trace], layout);
+            </script>
+        {% else %}
+            <p>No historical data available for the specified period.</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>

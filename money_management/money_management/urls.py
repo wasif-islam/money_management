@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include  
 from mod1 import views
 from mod4 import views as mod4_views
 
@@ -38,7 +38,12 @@ urlpatterns = [
     path('show_remaining_budget/<str:selected_month>/', views.show_remaining_budget, name='show_remaining_budget'),
     path('investments/', mod4_views.investment_page, name='investment_page'),
     path('stock/<str:stock_symbol>/', mod4_views.stock_detail, name='stock_detail'),
-    
+    path('investment_analysis/<str:stock_symbol>/', mod4_views.investment_analysis, name='investment_analysis'),
+    path('gain_loss_calculation/<str:stock_symbol>/', mod4_views.gain_loss_calculation, name='gain_loss_calculation'),
+    path('historical_data_trend_analysis/<str:stock_symbol>/', mod4_views.historical_data_trend_analysis, name='historical_data_trend_analysis'),
+    path('record_transaction/', mod4_views.record_transaction, name='record_transaction'),
+    path('automatic_transaction_updates/', mod4_views.automatic_transaction_updates, name='automatic_transaction_updates'),
+    path('dividend_tracking/', mod4_views.dividend_tracking, name='dividend_tracking'),
 
 
 ]
