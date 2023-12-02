@@ -5,8 +5,14 @@ from .models import CustomUser,CustomBill,CreditCard,BankAccount,Expense,Budget
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'phone', 'password']
+        fields = ['username', 'email', 'phone', 'password', 'image']
 
+    # Add widgets to customize the form fields
+    widgets = {
+        'username': forms.TextInput(attrs={'readonly': 'readonly'}),
+        'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
+        'password': forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
+    }
 
 class CustomBillForm(forms.ModelForm):
     class Meta:

@@ -119,8 +119,18 @@
     <div class="shape"></div>
     <div class="shape"></div>
 </div>
+
 <section class="user-profile-section">
+
     <h2>User Profile Management</h2>
+
+    <img src="{{ request.user.image.url }}" alt="Profile Picture">
+
+    {% comment %} <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ custom_user_form.as_p }}
+        <button type="submit">Update Profile Picture</button>
+    </form> {% endcomment %}
     
     <!-- Change Password -->
     <div class="form-group">
@@ -130,11 +140,30 @@
     </div>
     
     <!-- Change Profile Photo -->
-    <div class="form-group">
-        <label for="profile-photo">Change Profile Photo</label>
-        <input type="file" id="profile-photo" class="form-control">
-        <button class="btn btn-primary">Upload Photo</button>
-    </div>
+    <form method="post" enctype="multipart/form-data" action="{% url 'update_profile_picture' %}">
+        {% csrf_token %}
+    
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" class="form-control" value="{{ user.username }}" readonly>
+        </div>
+    
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" value="{{ user.email }}" readonly>
+        </div>
+    
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+        </div>
+    
+        <div class="form-group">
+            <label for="profile-photo">Change Profile Photo</label>
+            <input type="file" id="profile-photo" name="image" class="form-control">
+            <button type="submit" class="btn btn-primary">Upload Photo</button>
+        </div>
+    </form>
     
     <!-- Account Deletion Process -->
     <button class="btn btn-danger">Delete Account</button>

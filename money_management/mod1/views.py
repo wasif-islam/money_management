@@ -2,6 +2,7 @@ from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from .forms import UserProfileForm
 from .models import CustomUser
 from .models import CustomBill
 from .forms import CustomBillForm
@@ -13,8 +14,8 @@ from .forms import ExpenseForm,BudgetForm
 from django.contrib import messages
 from datetime import datetime
 from django.db.models import Sum
-from django.http import JsonResponse
-
+from django.http import HttpResponseBadRequest, JsonResponse
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 @login_required(login_url='login')
@@ -167,3 +168,18 @@ def show_remaining_budget(request, selected_month):
             return JsonResponse({'message': f'Budget not found for {selected_month}'})
     else:
         return JsonResponse({'message': 'Invalid request'})
+    
+
+def update_profile_picture(request):
+    if request.method == 'POST':
+        # Exclude the password field from the form
+        custom_user_form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        custom_user_form.fields['password'].required = False  # Make the password field not required
+        
+        if custom_user_form.is_valid():
+            # Save the form without validating the password
+            custom_user_form.save(update_fields=['image'])
+            return redirect('home')
+
+    # Handle form errors or redirect accordingly
+    return redirect('home')

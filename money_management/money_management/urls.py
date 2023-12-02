@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path, include  
 from mod1 import views
 from mod4 import views as mod4_views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,5 +47,9 @@ urlpatterns = [
     path('dividend_tracking/', mod4_views.dividend_tracking, name='dividend_tracking'),
     path('manage_portfolios/', mod4_views.manage_portfolios, name='manage_portfolios'),
     path('market_news/', mod4_views.market_news, name='market_news'),
+    path('update_profile_picture/', views.update_profile_picture, name='update_profile_picture'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

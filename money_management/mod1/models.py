@@ -1,4 +1,4 @@
-from django.db import models
+
 
 # Create your models here.
 
@@ -10,6 +10,7 @@ class CustomUser(AbstractUser):  #using abstract user which by def inclds uname 
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     username = models.CharField(max_length=30, unique=True)
+    image = models.ImageField(upload_to='user_images/', null=True, blank=True)
     def __str__(self):
         return self.username
     
