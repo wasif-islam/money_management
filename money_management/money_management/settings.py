@@ -103,6 +103,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#email
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'needspeed3600@gmail.com'  # Replace with your Gmail email
+EMAIL_HOST_PASSWORD = 'dcnswejwoigyywvq'  # Replace with your Gmail password
+
+PASSWORD_RESET_TIMEOUT = 600
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

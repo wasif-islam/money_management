@@ -48,6 +48,10 @@ urlpatterns = [
     path('manage_portfolios/', mod4_views.manage_portfolios, name='manage_portfolios'),
     path('market_news/', mod4_views.market_news, name='market_news'),
     path('update_profile_picture/', views.update_profile_picture, name='update_profile_picture'),
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    # path('change_password/', views.change_password, name='change_password'),
+    path('change_password/', views.MyPasswordChangeView.as_view(), name='change_password'),
+    path('categorize_bill/', views.categorize_bill, name='categorize_bill'),
 
 ]
 

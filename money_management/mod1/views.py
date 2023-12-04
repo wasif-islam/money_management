@@ -1,11 +1,11 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .forms import UserProfileForm
 from .models import CustomUser
-from .models import CustomBill
-from .forms import CustomBillForm
+from .models import CustomBill,BillCategory
+from .forms import CustomBillForm, BillCategoryForm
 from .models import CreditCard
 from .forms import CreditCardForm
 from .forms import BankAccountForm
@@ -14,9 +14,17 @@ from .forms import ExpenseForm,BudgetForm
 from django.contrib import messages
 from datetime import datetime
 from django.db.models import Sum
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse,HttpResponse
 from django.core.files.storage import FileSystemStorage
-
+from .forms import UserRegistrationForm
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 # Create your views here.
 @login_required(login_url='login')
 def home(request):
@@ -39,37 +47,171 @@ def loginpage(request):
     return render(request, 'login.html')
 
 def signup(request):
+    print("Inside signup view")
     if request.method == 'POST':
-        uname = request.POST.get('username')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        pass1 = request.POST.get('password1')
-        pass2 = request.POST.get('password2')
-        if pass1 == pass2:
-            my_user = CustomUser.objects.create_user(username=uname, email=email, password=pass1, phone=phone)
-            my_user.save()
-            return redirect('login')
-        else:
-            return HttpResponse("Password do not match")
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])
+            user.is_active = False  # User is not active until email confirmation
 
-    return render(request, 'signup.html') 
+            user.save()
+
+            # Send email for confirmation
+            send_activation_email(request, user)
+
+            messages.success(request, 'Please check your email to complete authentication. Please make sure you check the spam folder as well.')
+
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+
+    return render(request, 'signup.html', {'form': form})
+
+def send_activation_email(request, user):
+    current_site = get_current_site(request)
+    
+    # Convert the bytes to a string using decode()
+    uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+    
+    # Create the activation link
+    activation_link = f'http://{current_site.domain}/activate/{uidb64}/{default_token_generator.make_token(user)}/'
+
+    subject = 'Activate Your Account'
+    message = f'Hi {user.username},\n\nClick the following link to activate your account:\n\n{activation_link}\n\nIf you did not register on our site, please ignore this email.\n\nThanks!'
+    
+    from_email = 'needspeed3600@gmail.com'  # Replace with your email
+    to_email = 'needspeed3600@gmail.com'  # Replace with the specific email
+    
+    send_mail(subject, message, from_email, [to_email])
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_bytes(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        # Log in the user after activation
+        authenticated_user = authenticate(request, username=user.username, password=user.password)
+        login(request, authenticated_user)
+
+        messages.success(request, 'Your account has been activated. You are now logged in.')
+
+        return redirect('home')
+    else:
+        messages.error(request, 'Invalid activation link.')
+        return HttpResponse('Activation link is invalid!')
+# views.py
+
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.utils import timezone
+from django.conf import settings
+
+class ActivateAccountView(PasswordResetConfirmView):
+    template_name = 'activation_template.html'
+    success_url = '/login/'
+    
+    def form_valid(self, form):
+        user = form.save()
+        user.is_active = True
+        user.save()
+        authenticated_user = authenticate(self.request, username=user.username, password=user.password)
+        login(self.request, authenticated_user)
+
+        messages.success(self.request, 'Authentication Successful, Welcome to Money Management.')
+
+        return super().form_valid(form)
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['expiration_time'] = settings.PASSWORD_RESET_TIMEOUT // 60  # Convert seconds to minutes
+        return context
+
+    def get_user(self, uidb64):
+        User = get_user_model()
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        return user
+
+    def get_uidb64(self):
+        return self.kwargs.get(self.uidb64_url_kwarg)
+
+# @login_required(login_url='login')  #changing pass
+# def change_password(request):
+#     if request.method == 'POST':
+#         form = PasswordChangeForm(request.user, request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             update_session_auth_hash(request, user)  # Important to keep the user logged in
+#             messages.success(request, 'Your password was successfully updated!')
+#             return redirect('home')
+#         else:
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = PasswordChangeForm(request.user)
+#     return render(request, 'change_password.html', {'form': form})
+class MyPasswordChangeView(PasswordChangeView):
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('home')  # Redirect to home upon successful password change
 
 def logoutpage(request):
     logout(request)
     return redirect('login')
 
+@login_required(login_url='login')
 def billpay(request):
-    
+    # Check if default categories exist, create them if not
+    default_categories = ['Utilities', 'Entertainment', 'Food']
+    for category_name in default_categories:
+        category, created = BillCategory.objects.get_or_create(
+            user=request.user,
+            category_name=category_name,
+            defaults={'category_description': f'Default category for {category_name.lower()} expenses.'}
+        )
+
+    categories = BillCategory.objects.filter(user=request.user)
+
     if request.method == 'POST':
         form = CustomBillForm(request.POST)
         if form.is_valid():
-            custom_bill = form.save(commit=False)
-            custom_bill.user = request.user  # Assign the logged-in user to the custom_bill
-            custom_bill.save()
-            return redirect('home')
+            bill = form.save(commit=False)
+            bill.user = request.user
+
+            selected_category_id = request.POST.get('bill_category')
+            selected_category = BillCategory.objects.get(pk=selected_category_id)
+            bill.category = selected_category
+
+            bill.save()
+            return redirect('bill_pay')
     else:
         form = CustomBillForm()
-    return render(request, 'billpay.html')
+
+    return render(request, 'billpay.html', {'form': form, 'categories': categories})
+
+def categorize_bill(request):
+    print("categorize_bill method called")
+    if request.method == 'POST':
+        form = BillCategoryForm(request.POST)
+        if form.is_valid():
+            # Save the new category
+            category = form.save(commit=False)
+            category.user = request.user
+            category.save()
+            print("Category saved successfully")
+            return redirect('bill_pay')  # Redirect to the billpay page
+    else:
+        form = BillCategoryForm()
+
+    return render(request, 'billpay.html', {'form': form})
 
 def link_credit_card(request):
     if request.method == 'POST':
@@ -83,6 +225,8 @@ def link_credit_card(request):
         form = CreditCardForm()
 
     return render(request, 'billpay.html', {'credit_card_form': form})  
+
+
 def link_bank_account(request):
     if request.method == 'POST':
         form = BankAccountForm(request.POST)

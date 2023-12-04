@@ -143,55 +143,79 @@
             <h3>Manual Entry</h3>
             <form method="post" action="{% url 'bill_pay' %}">
                 {% csrf_token %}
+                
                 <div class="form-group">
-                    <label for="bill-name">Bill Name</label>
-                    <input type="text" id="bill-name" name="bill_name" placeholder="Enter Bill Name">
+                    <label for="bill-category">Select Bill Category:</label>
+                    <select id="bill-category" name="bill_category">
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% endfor %}
+                        <option value="add_new">Add New</option>
+                    </select>
+                </div>
+
+
+                <!-- Bill details -->
+                <div class="form-group">
+                    <label for="bill-name">Bill Name:</label>
+                    <input type="text" id="bill-name" name="bill_name" placeholder="Enter Bill Name" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="text" id="amount" name="amount" placeholder="Enter Amount">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" placeholder="Enter Amount" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="due-date">Due Date</label>
-                    <input type="date" id="due-date" name="due_date">
+                    <label for="due-date">Due Date:</label>
+                    <input type="date" id="due-date" name="due_date" required>
                 </div>
 
-                <button type="submit">Submit</button>
+                <button type="submit">Add Bill</button>
             </form>
         </div>
 
-        <!-- Categorizing Bill Form -->
-        <div class="form-section" id="categorizing-bill-form">
-            <h3>Categorizing Bill</h3>
-            <div class="form-group">
-                <label for="bill-category">Select Bill Category:</label>
-                <select id="bill-category" name="bill_category">
-                    <option value="utilities">Utilities</option>
-                    <option value="rent">Rent</option>
-                    <option value="groceries">Groceries</option>
-                    <!-- Add more categories as needed -->
-                </select>
-            </div>
+        
+       
 
-            <div class="form-group">
-                <label for="bill-description">Bill Description:</label>
-                <textarea id="bill-description" name="bill_description" placeholder="Enter a description for the bill"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="bill-amount">Bill Amount:</label>
-                <input type="text" id="bill-amount" name="bill_amount" placeholder="Enter Amount">
-            </div>
-
-            <div class="form-group">
-                <label for="bill-due-date">Due Date:</label>
-                <input type="date" id="bill-due-date" name="bill_due_date">
-            </div>
-
-            <button type="submit">Categorize Bill</button>
+      
+        <!-- Categorize bill -->
+        <div class="form-section" id="bill-retrieval-form">
+            <h3>Categorize Bill</h3>
+        
+            <form method="post" action="{% url 'categorize_bill' %}">
+                {% csrf_token %}
+        
+                <!-- Bill Category Dropdown -->
+                <div class="form-group">
+                    <label for="bill-category">Select Bill Category:</label>
+                    <select id="bill-category" name="bill_category">
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <!-- New Category Name -->
+                <div class="form-group">
+                    <label for="new-category-name">Name of New Category:</label>
+                    <input type="text" id="new-category-name" name="category_name" placeholder="Enter Category Name" required>
+                </div>
+        
+                <!-- New Category Description -->
+                <div class="form-group">
+                    <label for="new-category-description">Description:</label>
+                    <textarea id="new-category-description" name="category_description" placeholder="Enter Category Description" required></textarea>
+                </div>
+        
+                <!-- Submit Button -->
+                <button type="submit">Categorize Bill</button>
+            </form>
         </div>
+
+
+    
+
 
         <!-- Due Date Reminders -->
         <h3>Due Date Reminders</h3>
