@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path, include  
 from mod1 import views
 from mod4 import views as mod4_views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,7 +43,17 @@ urlpatterns = [
     path('gain_loss_calculation/<str:stock_symbol>/', mod4_views.gain_loss_calculation, name='gain_loss_calculation'),
     path('historical_data_trend_analysis/<str:stock_symbol>/', mod4_views.historical_data_trend_analysis, name='historical_data_trend_analysis'),
     path('record_transaction/', mod4_views.record_transaction, name='record_transaction'),
+    #path('automatic_transaction_updates/', mod4_views.automatic_transaction_updates, name='automatic_transaction_updates'),
     path('dividend_tracking/', mod4_views.dividend_tracking, name='dividend_tracking'),
-
+    path('manage_portfolios/', mod4_views.manage_portfolios, name='manage_portfolios'),
+    path('market_news/', mod4_views.market_news, name='market_news'),
+    path('update_profile_picture/', views.update_profile_picture, name='update_profile_picture'),
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    # path('change_password/', views.change_password, name='change_password'),
+    path('change_password/', views.MyPasswordChangeView.as_view(), name='change_password'),
+    path('categorize_bill/', views.categorize_bill, name='categorize_bill'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

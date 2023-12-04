@@ -10,7 +10,7 @@
         body {
             background-color: #00CED1;
             font-family: 'Poppins', sans-serif;
-            color: #ffffff;
+            color: #000000; /* Set text color to black */
         }
 
         .container {
@@ -40,7 +40,7 @@
 
         li {
             margin-bottom: 15px;
-            color: #fff;
+            color: #000000; /* Set text color to black */
         }
 
         .form-section {
@@ -64,16 +64,16 @@
             width: 100%;
             padding: 10px;
             border-radius: 5px;
-            border: 1px solid #fff;
+            border: 1px solid #ffffff; /* Set border color to black */
             background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            color: #000000; /* Set text color to black */
             margin-bottom: 15px;
         }
 
         button {
             width: 100%;
-            background-color: #ffffff;
-            color: #080710;
+            background-color: ##ffffff; /* Set button background color to black */
+            color: #000000; /* Set button text color to white */
             padding: 15px 0;
             font-size: 18px;
             font-weight: 600;
@@ -99,7 +99,7 @@
 
         .scheduling-section li {
             margin-bottom: 15px;
-            color: #fff;
+            color: #000000; /* Set text color to black */
         }
     </style>
 </head>
@@ -108,25 +108,32 @@
     <div class="container">
         <h4>Bill Retrieval</h4>
 
-        <!-- Linking Credit Card Form -->
+                <!-- Linking Credit Card Form -->
         <div class="form-section" id="linking-credit-card-form">
             <h3>Linking Credit Card</h3>
             <form method="post" action="{% url 'link_credit_card' %}">
                 {% csrf_token %}
-                {{ credit_card_form.as_table }}
+
+                <div class="form-group">
+                    <label for="card-number">Card Number:</label>
+                    <input type="text" id="card-number" name="card_number" placeholder="Enter Card Number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cvc">CVC:</label>
+                    <input type="text" id="cvc" name="cvc" placeholder="Enter CVC" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exp-date">Expiration Date (MM/YY):</label>
+                    <input type="text" id="exp-date" name="exp_date" placeholder="Enter Expiration Date (MM/YY)" required>
+                </div>
+
                 <button type="submit">Link Credit Card</button>
             </form>
         </div>
 
-        <!-- Linking Bank Account Form -->
-        <div class="form-section" id="linking-bank-account-form">
-            <h3>Linking Bank Account</h3>
-            <form method="post" action="{% url 'link_bank_account' %}">
-                {% csrf_token %}
-                {{ bank_account_form.as_table }}
-                <button type="submit">Link Bank Account</button>
-            </form>
-        </div>
+
 
         <!-- Linking Bank Account Form -->
         <div class="form-section" id="linking-bank-account-form">
@@ -137,60 +144,74 @@
                 <button type="submit">Link Bank Account</button>
             </form>
         </div>
-        
+
         <!-- Manual Entry Form -->
         <div class="form-section" id="manual-entry-form">
             <h3>Manual Entry</h3>
             <form method="post" action="{% url 'bill_pay' %}">
                 {% csrf_token %}
+
                 <div class="form-group">
-                    <label for="bill-name">Bill Name</label>
-                    <input type="text" id="bill-name" name="bill_name" placeholder="Enter Bill Name">
+                    <label for="bill-category">Select Bill Category:</label>
+                    <select id="bill-category" name="bill_category">
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% endfor %}
+                        <option value="add_new">Add New</option>
+                    </select>
+                </div>
+
+                <!-- Bill details -->
+                <div class="form-group">
+                    <label for="bill-name">Bill Name:</label>
+                    <input type="text" id="bill-name" name="bill_name" placeholder="Enter Bill Name" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="text" id="amount" name="amount" placeholder="Enter Amount">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" placeholder="Enter Amount" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="due-date">Due Date</label>
-                    <input type="date" id="due-date" name="due_date">
+                    <label for="due-date">Due Date:</label>
+                    <input type="date" id="due-date" name="due_date" required>
                 </div>
 
-                <button type="submit">Submit</button>
+                <button type="submit">Add Bill</button>
             </form>
         </div>
 
-        <!-- Categorizing Bill Form -->
-        <div class="form-section" id="categorizing-bill-form">
-            <h3>Categorizing Bill</h3>
-            <div class="form-group">
-                <label for="bill-category">Select Bill Category:</label>
-                <select id="bill-category" name="bill_category">
-                    <option value="utilities">Utilities</option>
-                    <option value="rent">Rent</option>
-                    <option value="groceries">Groceries</option>
-                    <!-- Add more categories as needed -->
-                </select>
-            </div>
+        <!-- Categorize bill -->
+        <div class="form-section" id="bill-retrieval-form">
+            <h3>Categorize Bill</h3>
+            <form method="post" action="{% url 'categorize_bill' %}">
+                {% csrf_token %}
 
-            <div class="form-group">
-                <label for="bill-description">Bill Description:</label>
-                <textarea id="bill-description" name="bill_description" placeholder="Enter a description for the bill"></textarea>
-            </div>
+                <!-- Bill Category Dropdown -->
+                <div class="form-group">
+                    <label for="bill-category">Select Bill Category:</label>
+                    <select id="bill-category" name="bill_category">
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="bill-amount">Bill Amount:</label>
-                <input type="text" id="bill-amount" name="bill_amount" placeholder="Enter Amount">
-            </div>
+                <!-- New Category Name -->
+                <div class="form-group">
+                    <label for="new-category-name">Name of New Category:</label>
+                    <input type="text" id="new-category-name" name="category_name" placeholder="Enter Category Name" required>
+                </div>
 
-            <div class="form-group">
-                <label for="bill-due-date">Due Date:</label>
-                <input type="date" id="bill-due-date" name="bill_due_date">
-            </div>
+                <!-- New Category Description -->
+                <div class="form-group">
+                    <label for="new-category-description">Description:</label>
+                    <textarea id="new-category-description" name="category_description" placeholder="Enter Category Description" required></textarea>
+                </div>
 
-            <button type="submit">Categorize Bill</button>
+                <!-- Submit Button -->
+                <button type="submit">Categorize Bill</button>
+            </form>
         </div>
 
         <!-- Due Date Reminders -->
@@ -257,7 +278,6 @@
                 <li>{{ bill.bill_name }} - Amount: {{ bill.amount }} - Due Date: {{ bill.due_date }}</li>
             {% endfor %}
         </ul>
-
     </div>
 </body>
 

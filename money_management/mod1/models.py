@@ -1,21 +1,35 @@
-from django.db import models
+
 
 # Create your models here.
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
+
 class CustomUser(AbstractUser):  #using abstract user which by def inclds uname and pass
     
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     username = models.CharField(max_length=30, unique=True)
+    is_active = models.BooleanField(default=False)  # Add this line
+    activation_token = models.CharField(max_length=255, blank=True, null=True)  # Add this line
+    image = models.ImageField(upload_to='user_images/', null=True, blank=True)
     def __str__(self):
         return self.username
     
 
+class BillCategory(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)    #For bill catagory
+    category_name = models.CharField(max_length=255)
+    category_description = models.TextField()
+    
+    def __str__(self):
+        return self.category_name
+
 class CustomBill(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    category = models.ForeignKey(BillCategory, on_delete=models.SET_NULL, null=True, blank=True)
     bill_name = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     due_date = models.DateField()
@@ -24,17 +38,18 @@ class CustomBill(models.Model):
         return f"{self.user.username}'s {self.bill_name}"
     
 
+
 from .models import CustomUser
 
 class CreditCard(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     card_number = models.CharField(max_length=16, unique=True)
     cvc = models.CharField(max_length=4)
-    #exp_date = models.CharField(max_length=5) 
-    exp_date = models.DateField()
+    exp_date = models.CharField(max_length=5)  # Store as MM/YY
 
     def __str__(self):
         return f"{self.user.username}'s Credit Card"
+
 
 class BankAccount(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -64,3 +79,5 @@ class Budget(models.Model):
 
     # def __str__(self):
     #     return f"{self.user.username} - {self.budget_month.strftime('%B %Y')}"      
+
+

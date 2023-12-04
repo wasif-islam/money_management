@@ -1,0 +1,9 @@
+<!-- activation_template.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Account Activation</h2>
+    <p>Your account has been successfully activated. You can now log in to your account.</p>
+    <p>Activation link is valid for {{ expiration_time }} minutes.</p>
+{% endblock %}

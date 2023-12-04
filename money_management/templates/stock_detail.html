@@ -77,7 +77,7 @@
 
 <body>
     <h1>{{ stock_symbol }} Stock Detail</h1>
-
+  
     <!-- Display stock data here -->
 
     <form action="{% url 'stock_detail' stock_symbol=stock_symbol %}" method="get">
@@ -117,5 +117,7 @@
 
         Plotly.newPlot('stockChart', [trace], layout);
     </script>
+   
+    
 </body>
 </html>

@@ -1,14 +1,15 @@
 # mod4/views.py
 
-from django.shortcuts import render, redirect
+import requests
 import yfinance as yf
+from django.shortcuts import render, redirect
 from datetime import datetime
 from yfinance import Ticker
 from .models import Stock
 from django.contrib import messages
 from .models import Transaction, Dividend, TransactionUpdate
 from .forms import TransactionForm, DividendForm, TransactionUpdateForm
-
+from django.conf import settings
 
 def investment_page(request):
     # For simplicity, let's hardcode a list of stock symbols
@@ -63,11 +64,11 @@ def stock_detail(request, stock_symbol):
 def investment_analysis(request, stock_symbol):
     stock = yf.Ticker(stock_symbol)
     
-    
+    # Get historical data
     history = stock.history(period='1d')  # Adjust the period as needed
     current_value = history['Close'].iloc[-1]  # Latest closing price
     
-    
+    # Placeholder initial investment
     initial_investment = 1000
     
     return render(request, 'investment_analysis.html', {'initial_investment': initial_investment, 'current_value': current_value, 'stock_symbol': stock_symbol})
@@ -75,11 +76,11 @@ def investment_analysis(request, stock_symbol):
 def gain_loss_calculation(request, stock_symbol):
     stock = yf.Ticker(stock_symbol)
     
+    # Get historical data
+    history = stock.history(period='1d')  # Adjust the period as needed
+    current_value = history['Close'].iloc[-1]  # Latest closing price
     
-    history = stock.history(period='1d')  
-    current_value = history['Close'].iloc[-1]  
-    
-    
+    # Placeholder initial investment
     initial_investment = 1000
     
     gain_loss = current_value - initial_investment
@@ -88,11 +89,11 @@ def gain_loss_calculation(request, stock_symbol):
 
 def historical_data_trend_analysis(request, stock_symbol):
     try:
-       
+        # Fetch historical stock data using yfinance
         stock = yf.Ticker(stock_symbol)
-        history = stock.history(period='1y')  
+        history = stock.history(period='1y')  # Adjust the period as needed
 
-        
+        # Check if the DataFrame is empty
         if history.empty:
             raise Exception("No historical data available for the specified stock.")
 
@@ -134,3 +135,26 @@ def dividend_tracking(request):
     else:
         form = DividendForm()
     return render(request, 'dividend_tracking.html', {'form': form})
+
+def manage_portfolios(request):
+    # Add logic for managing portfolios, if needed
+    return render(request, 'manage_portfolios.html')
+
+def market_news(request):
+    # Set your News API key
+    news_api_key = settings.NEWS_API_KEY  # Make sure to set this in your Django settings
+
+    # Make a request to the News API
+    news_url = f'https://newsapi.org/v2/top-headlines'
+    params = {
+        'apiKey': news_api_key,
+        'category': 'business',  # You can adjust the category based on your needs
+    }
+
+    response = requests.get(news_url, params=params)
+    news_data = response.json()
+
+    # Extract relevant information from the response
+    articles = news_data.get('articles', [])
+
+    return render(request, 'market_news.html', {'articles': articles})

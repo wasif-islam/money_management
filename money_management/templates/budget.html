@@ -11,7 +11,7 @@
         body {
             background-color: #00CED1;
             font-family: 'Poppins', sans-serif;
-            color: #ffffff;
+            color: #000000; /* Set text color to black */
         }
 
         .background {
@@ -63,7 +63,7 @@
             border-radius: 5px;
             border: 1px solid #fff;
             background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            color: #000000; /* Set text color to black */
             margin-bottom: 15px;
         }
 
@@ -100,17 +100,58 @@
         .social div:hover {
             background-color: rgba(255, 255, 255, 0.47);
         }
+
+        progress {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            /* Set the progress bar color to black */
+            background-color: #000000;
+            /* Set the font color inside progress bar to white */
+            color: white;
+        }
+
+        /* Style to display the percentage inside the progress bar */
+        progress[value] {
+            /* Reset the default appearance */
+            -webkit-appearance: none;
+            appearance: none;
+            /* Get rid of default border in Firefox and Opera. */
+            border: none;
+            /* Add custom styling */
+            height: 20px;
+        }
+
+        progress[value]::-webkit-progress-bar {
+            background-color: #000000;
+            border-radius: 5px;
+        }
+
+        progress[value]::-webkit-progress-value {
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        /* Style to display the percentage inside the progress bar */
+        progress[value]::-webkit-progress-value::after {
+            content: ' ' attr(value) '%';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
     </style>
 </head>
 
 <body>
     <!-- Add this section to display messages -->
     {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-      </ul>
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
     <!-- Expense Tracking Section -->
     <div class="background">
@@ -120,76 +161,51 @@
     <form method="post" action="{% url 'add_expense' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <h1>Expense Tracking</h1>
-        
+
         <label for="id_category">Expense Category</label>
         <input type="text" name="category" id="id_category" placeholder="Enter expense category">
-    
+
         <label for="id_amount">Expense Amount</label>
         <input type="number" name="amount" id="id_amount" placeholder="Enter expense amount">
-    
+
         <label for="id_description">Expense Description</label>
         <input type="text" name="description" id="id_description" placeholder="Enter expense description">
-    
+
         <label for="id_receipt">Attach Receipt</label>
         <input type="file" name="receipt" id="id_receipt">
 
         <label for="id_date">Expense Date</label>
         <input type="date" name="date" id="id_date">
-    
+
         <button type="submit">Add Expense</button>
     </form>
 
     <!-- Budget Creation and Monitoring Section -->
-    <form method="post" action="{% url 'create_budget' %}">
+    <form method="post" action="{% url 'create_budget' %}" id="budgetForm">
         {% csrf_token %}
         <h1>Budget Creation and Monitoring</h1>
 
         <label for="id_budget_month">Budget Month</label>
-        <input type="text" name="budget_month" id="id_budget_month" placeholder="Enter budget month" required>
+        <input type="text" name="budget_month" id="id_budget_month" placeholder="Enter budget month">
 
         <label for="id_target_budget">Target Budget</label>
-        <input type="number" name="target_budget" id="id_target_budget" placeholder="Enter target budget" required>
+        <input type="number" name="target_budget" id="id_target_budget" placeholder="Enter target budget">
 
         <button type="submit">Create Budget</button>
+
+        <label for="budgetMonth">Select Month:</label>
+        <select id="budgetMonth">
+            <!-- JavaScript will dynamically populate options here -->
+        </select>
+        <button type="button" id="showRemainingBudget">Show Remaining Budget</button>
+        <div id="remainingBudgetMessage"></div>
+        <div>
+            <progress id="budgetProgressBar" value="0" max="100"></progress>
+            <p id="remainingBudgetText">Remaining Budget: $0.00</p>
+        </div>
     </form>
 
-    <!-- Show Remaining Budget Section -->
-    <label for="budgetMonth">Select Month:</label>
-    <select id="budgetMonth">
-        <!-- JavaScript will dynamically populate options here -->
-    </select>
-    <button id="showRemainingBudget">Show Remaining Budget</button>
-    <div id="remainingBudgetMessage"></div>
-
-    <script>
-        // Add this script to your HTML file to handle the button click
-        document.getElementById('showRemainingBudget').addEventListener('click', function () {
-            // Get the selected month from the dropdown
-            const selectedMonth = document.getElementById('budgetMonth').value;
-
-            // Make the AJAX request with the selected month
-            fetch(`/show_remaining_budget/${selectedMonth}/`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('remainingBudgetMessage').innerText = data.message;
-                });
-        });
-
-        // Dynamically populate the month dropdown with a range of months
-        const monthDropdown = document.getElementById('budgetMonth');
-        for (let month = 1; month <= 12; month++) {
-            const option = document.createElement('option');
-            const monthString = String(month).padStart(2, '0');
-            option.value = monthString;
-            option.text = monthString;
-            monthDropdown.add(option);
-        }
-    </script>
-
-
-    <!-- Goal Setting & Tracking Section -->
-    <form >
-      
+    <form>
         <h1>Goal Setting & Tracking</h1>
         <label for="goalDescription">Goal Description</label>
         <input type="text" name="goalDescription" id="goalDescription" placeholder="Enter goal description">
@@ -204,11 +220,75 @@
     </form>
 
     <!-- Irregular Expense Alerts/Reports Section -->
-    <div class="social">
+    <div class="social" id="irregularExpenseAlert">
         <div class="fb">
             <i class="fas fa-bell"></i> Irregular Expense Alerts
         </div>
     </div>
+
+    <script>
+        document.getElementById('showRemainingBudget').addEventListener('click', function () {
+            const selectedMonth = document.getElementById('budgetMonth').value;
+
+            fetch(`/show_remaining_budget/${selectedMonth}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('remainingBudgetMessage').innerText = '';
+                    document.getElementById('id_budget_month').value = data.budget_month;
+                    document.getElementById('id_target_budget').value = data.target_budget;
+
+                    const remainingBudget = parseFloat(data.remaining_budget);
+                    const targetBudget = parseFloat(data.target_budget);
+
+                    if (!isNaN(remainingBudget) && !isNaN(targetBudget) && targetBudget > 0) {
+                        const percentageRemaining = (remainingBudget / targetBudget) * 100;
+                        document.getElementById('budgetProgressBar').value = 100 - percentageRemaining;
+                        document.getElementById('remainingBudgetText').innerText = `Remaining Budget: $${remainingBudget.toFixed(2)}`;
+
+                        // Check if remaining budget is negative
+                        if (remainingBudget < 0) {
+                            document.getElementById('remainingBudgetText').innerText = `Remaining Budget: $${remainingBudget.toFixed(2)}`;
+                            
+                            // Show the irregular expense alert
+                            document.getElementById('irregularExpenseAlert').style.display = 'flex';
+                            
+                            // Notify the user
+                            alert('You have gone over budget!');
+                        } else {
+                            // Hide the irregular expense alert if budget is not negative
+                            document.getElementById('irregularExpenseAlert').style.display = 'none';
+                        }
+                    } else {
+                        document.getElementById('budgetProgressBar').value = 0;
+                        document.getElementById('remainingBudgetText').innerText = 'Remaining Budget: N/A';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    document.getElementById('remainingBudgetMessage').innerText = 'Error fetching data';
+                });
+        });
+
+        // Dynamically populate the month dropdown with a range of months
+        const monthDropdown = document.getElementById('budgetMonth');
+        for (let month = 1; month <= 12; month++) {
+            const option = document.createElement('option');
+            const monthString = String(month).padStart(2, '0');
+            option.value = monthString;
+            option.text = monthString;
+            monthDropdown.add(option);
+        }
+
+        // Prevent the form submission when the "Show Remaining Budget" button is clicked
+        document.getElementById('budgetForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+        });
+    </script>
 </body>
 
 </html>

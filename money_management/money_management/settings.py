@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -102,6 +103,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#email
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'needspeed3600@gmail.com'  # Replace with your Gmail email
+EMAIL_HOST_PASSWORD = 'dcnswejwoigyywvq'  # Replace with your Gmail password
+
+PASSWORD_RESET_TIMEOUT = 600
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -124,3 +136,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+NEWS_API_KEY = '301274c95cd7471a86cc1a0efd97e078'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
