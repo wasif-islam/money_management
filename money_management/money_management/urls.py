@@ -21,6 +21,7 @@ from mod4 import views as mod4_views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.signup, name='signup'),
@@ -52,6 +53,8 @@ urlpatterns = [
     # path('change_password/', views.change_password, name='change_password'),
     path('change_password/', views.MyPasswordChangeView.as_view(), name='change_password'),
     path('categorize_bill/', views.categorize_bill, name='categorize_bill'),
+    path('get_expenses_for_month/<str:month>/', views.get_expenses_for_month, name='get_expenses_for_month'),
+    path('payment_history/', views.payment_history, name='payment_history'),
 
 ]
 

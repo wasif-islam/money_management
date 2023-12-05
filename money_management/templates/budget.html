@@ -5,6 +5,7 @@
     <title>Budget, Expense, and Goal Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style media="screen">
         /* Add your styles here */
@@ -56,7 +57,6 @@
         }
 
         input,
-        progress,
         file {
             width: 100%;
             padding: 10px;
@@ -100,47 +100,6 @@
         .social div:hover {
             background-color: rgba(255, 255, 255, 0.47);
         }
-
-        progress {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            /* Set the progress bar color to black */
-            background-color: #000000;
-            /* Set the font color inside progress bar to white */
-            color: white;
-        }
-
-        /* Style to display the percentage inside the progress bar */
-        progress[value] {
-            /* Reset the default appearance */
-            -webkit-appearance: none;
-            appearance: none;
-            /* Get rid of default border in Firefox and Opera. */
-            border: none;
-            /* Add custom styling */
-            height: 20px;
-        }
-
-        progress[value]::-webkit-progress-bar {
-            background-color: #000000;
-            border-radius: 5px;
-        }
-
-        progress[value]::-webkit-progress-value {
-            background-color: white;
-            border-radius: 5px;
-        }
-
-        /* Style to display the percentage inside the progress bar */
-        progress[value]::-webkit-progress-value::after {
-            content: ' ' attr(value) '%';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
     </style>
 </head>
 
@@ -183,16 +142,16 @@
     <!-- Budget Creation and Monitoring Section -->
     <form method="post" action="{% url 'create_budget' %}" id="budgetForm">
         {% csrf_token %}
-        <h1>Budget Creation and Monitoring</h1>
-
+        <h1>Budget Creation</h1>
+    
         <label for="id_budget_month">Budget Month</label>
-        <input type="text" name="budget_month" id="id_budget_month" placeholder="Enter budget month">
-
+        <input type="text" name="budget_month" id="id_budget_month" placeholder="Enter budget month" required>
+    
         <label for="id_target_budget">Target Budget</label>
-        <input type="number" name="target_budget" id="id_target_budget" placeholder="Enter target budget">
-
+        <input type="number" name="target_budget" id="id_target_budget" placeholder="Enter target budget" required>
+    
         <button type="submit">Create Budget</button>
-
+    
         <label for="budgetMonth">Select Month:</label>
         <select id="budgetMonth">
             <!-- JavaScript will dynamically populate options here -->
@@ -200,7 +159,9 @@
         <button type="button" id="showRemainingBudget">Show Remaining Budget</button>
         <div id="remainingBudgetMessage"></div>
         <div>
+            <p>Budget Progress</p>
             <progress id="budgetProgressBar" value="0" max="100"></progress>
+            <p id="budgetProgressText">Budget Used up-to: 0%</p>
             <p id="remainingBudgetText">Remaining Budget: $0.00</p>
         </div>
     </form>
@@ -229,7 +190,7 @@
     <script>
         document.getElementById('showRemainingBudget').addEventListener('click', function () {
             const selectedMonth = document.getElementById('budgetMonth').value;
-
+    
             fetch(`/show_remaining_budget/${selectedMonth}/`)
                 .then(response => {
                     if (!response.ok) {
@@ -241,15 +202,21 @@
                     document.getElementById('remainingBudgetMessage').innerText = '';
                     document.getElementById('id_budget_month').value = data.budget_month;
                     document.getElementById('id_target_budget').value = data.target_budget;
-
+    
                     const remainingBudget = parseFloat(data.remaining_budget);
                     const targetBudget = parseFloat(data.target_budget);
-
+    
                     if (!isNaN(remainingBudget) && !isNaN(targetBudget) && targetBudget > 0) {
-                        const percentageRemaining = (remainingBudget / targetBudget) * 100;
-                        document.getElementById('budgetProgressBar').value = 100 - percentageRemaining;
+                        const usedBudget = targetBudget - remainingBudget;
+                        const percentageUsed = (usedBudget / targetBudget) * 100;
+    
+                        document.getElementById('budgetProgressBar').value = percentageUsed;
                         document.getElementById('remainingBudgetText').innerText = `Remaining Budget: $${remainingBudget.toFixed(2)}`;
-
+    
+                        // Display the percentage of used budget
+                        const budgetProgressText = `Budget Used up-to: ${percentageUsed.toFixed(2)}%`;
+                        document.getElementById('budgetProgressText').innerText = budgetProgressText;
+    
                         // Check if remaining budget is negative
                         if (remainingBudget < 0) {
                             document.getElementById('remainingBudgetText').innerText = `Remaining Budget: $${remainingBudget.toFixed(2)}`;
@@ -290,5 +257,6 @@
         });
     </script>
 </body>
+
 
 </html>

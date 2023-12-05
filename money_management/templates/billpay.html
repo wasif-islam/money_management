@@ -244,12 +244,15 @@
         <div class="scheduling-section">
             <h3>Bill Scheduling</h3>
             <ul>
-                <li>Payment History</li>
+                <li><a href="{% url 'payment_history' %}">View Payment History</a></li>
+                <!-- ... other list items ... -->
                 <li>Download statements</li>
             </ul>
-
+            
             <!-- Additional content for Bill Scheduling can be added here -->
             <!-- For example: -->
+            <h4>Schedule Future Payments</h4>
+            <form>
             <h4>Schedule Future Payments</h4>
             <form>
                 <div class="form-group">

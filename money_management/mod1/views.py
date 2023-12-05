@@ -347,3 +347,37 @@ def update_profile_picture(request):
 
     # Handle form errors or redirect accordingly
     return redirect('home')
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
+from datetime import datetime
+from .models import Expense
+
+@csrf_exempt
+def get_expenses_for_month(request, month):
+    try:
+        # Parse the month parameter to a datetime object
+        month_date = datetime.strptime(month, '%Y-%m')
+
+        # Filter expenses for the specified month
+        expenses = Expense.objects.filter(date__year=month_date.year, date__month=month_date.month)
+
+        # Calculate total expenses for each date in the month
+        expenses_by_date = expenses.values('date').annotate(total_amount=Sum('amount')).order_by('date')
+
+        # Prepare data for JSON response
+        data = {
+            'expenses': list(expenses_by_date),
+        }
+
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@login_required
+def payment_history(request):
+    # Fetch bills associated with the logged-in user
+    custom_bills = CustomBill.objects.filter(user=request.user)
+
+    return render(request, 'payment_history.html', {'custom_bills': custom_bills})
