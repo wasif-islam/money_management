@@ -31,6 +31,8 @@ urlpatterns = [
     path('logout/',views.logoutpage,name='logout'),
     path('link_credit_card/', views.link_credit_card, name='link_credit_card'),
     path('link_bank_account/', views.link_bank_account, name='link_bank_account'),
+    path('payment_methods/', views.payment_methods, name='payment_methods'),
+    path('delete_entry/', views.delete_entry, name='delete_entry'),
     path('billpay/', views.billpay, name='bill_pay'),
     path('budget/', views.budget, name='budget'),
     path('add_expense/', views.add_expense, name='add_expense'),
@@ -55,6 +57,7 @@ urlpatterns = [
     path('categorize_bill/', views.categorize_bill, name='categorize_bill'),
     path('get_expenses_for_month/<str:month>/', views.get_expenses_for_month, name='get_expenses_for_month'),
     path('payment_history/', views.payment_history, name='payment_history'),
+    path('due_date_reminder/', views.due_date_reminder, name='due_date_reminder'),
 
 ]
 

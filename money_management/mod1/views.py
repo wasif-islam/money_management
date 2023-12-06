@@ -6,7 +6,7 @@ from .forms import UserProfileForm
 from .models import CustomUser
 from .models import CustomBill,BillCategory
 from .forms import CustomBillForm, BillCategoryForm
-from .models import CreditCard
+from .models import CreditCard,BankAccount
 from .forms import CreditCardForm
 from .forms import BankAccountForm
 from .models import Expense,Budget
@@ -245,6 +245,39 @@ def link_bank_account(request):
         form = BankAccountForm()
 
     return render(request, 'billpay.html', {'bank_account_form': form})  
+
+def payment_methods(request):
+    user_credit_cards = CreditCard.objects.filter(user=request.user)
+    user_bank_accounts = BankAccount.objects.filter(user=request.user)
+
+    return render(request, 'payment_methods.html', {'credit_cards': user_credit_cards, 'bank_accounts': user_bank_accounts})
+
+from django.shortcuts import get_object_or_404
+def delete_entry(request):
+    if request.method == 'POST':
+        entry_type = request.POST.get('type')
+        entry_id = request.POST.get('id')
+        print(entry_type)
+        # Handle deletion based on entry_type and entry_id
+        try:
+            if entry_type == 'bank_account':
+                entry = get_object_or_404(BankAccount, id=entry_id, user=request.user)
+                entry.delete()
+            elif entry_type == 'credit_card':
+                entry = get_object_or_404(CreditCard, id=entry_id, user=request.user)
+                entry.delete()
+            else:
+                # Invalid entry type
+                return JsonResponse({'success': False, 'message': 'Invalid entry type'})
+
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+
 def budget(request):
     return render(request, 'budget.html')
 
@@ -381,3 +414,31 @@ def payment_history(request):
     custom_bills = CustomBill.objects.filter(user=request.user)
 
     return render(request, 'payment_history.html', {'custom_bills': custom_bills})
+
+
+
+
+def due_date_reminder(request):
+    if request.method == 'POST':
+        bill_name = request.POST.get('bill_name')
+        due_date = request.POST.get('due_date')
+
+        # Send email reminder immediately
+        send_due_date_email(request.user.username, bill_name, due_date)
+
+        return redirect('bill_pay')  # Redirect to the billpay page or another appropriate URL
+
+    return render(request, 'billpay.html')
+
+
+def send_due_date_email(username, bill_name, due_date):
+    subject = f"Reminder: Your Bill '{bill_name}' is Due!"
+    message = f"Dear {username},\n\n"\
+              f"This is a reminder that your bill '{bill_name}' is due on {due_date}.\n"\
+              f"Please make the payment on time.\n\n"\
+              f"Thank you!\nYour Money Management Team"
+
+    from_email = 'needspeed3600@gmail.com'
+    recipient_list = ['needspeed3600@gmail.com']
+
+    send_mail(subject, message, from_email, recipient_list)
