@@ -193,7 +193,8 @@
         <label for="password">Password</label>
         <input type="password" placeholder="Password" id="password" name="pass">
         <button class="password-toggle-button" type="button" id="show-password">Show Password</button>
-        
+        <a href="{% url 'forgot_password' %}">Forgot Password?</a>
+
         <button type="submit">Log In</button>
 
         <a href="{% url 'signup' %}">Create an account</a>

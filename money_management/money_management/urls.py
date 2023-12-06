@@ -20,13 +20,16 @@ from mod1 import views
 from mod4 import views as mod4_views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.contrib.auth.views import PasswordResetConfirmView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.signup, name='signup'),
     path('signup/',views.signup,name='signup'),
     path('login/',views.loginpage,name='login'),
+    path('forgot_password/', views.forgot_password, name='forgot_password'),
+    path('reset_password/<uidb64>/<token>/', views.reset_password, name='reset_password'),
+    path('reset_password/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('home/',views.home,name='home'),
     path('logout/',views.logoutpage,name='logout'),
     path('link_credit_card/', views.link_credit_card, name='link_credit_card'),
