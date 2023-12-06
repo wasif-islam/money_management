@@ -106,3 +106,4 @@ class BudgetForm(forms.ModelForm):
         help_texts = {
             'target_budget': 'Enter the target budget for the selected month.',
         }
+

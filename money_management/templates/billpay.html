@@ -108,7 +108,7 @@
     <div class="container">
         <h4>Bill Retrieval</h4>
 
-                <!-- Linking Credit Card Form -->
+        <!-- Linking Credit Card Form -->
         <div class="form-section" id="linking-credit-card-form">
             <h3>Linking Credit Card</h3>
             <form method="post" action="{% url 'link_credit_card' %}">
@@ -140,9 +140,24 @@
             <h3>Linking Bank Account</h3>
             <form method="post" action="{% url 'link_bank_account' %}">
                 {% csrf_token %}
-                {{ bank_account_form.as_table }}
+                <!-- Account Number -->
+                <div class="form-group">
+                    <label for="id_account_number">Account Number:</label>
+                    <input type="text" id="id_account_number" name="account_number" required>
+                </div>
+                <!-- Bank Name -->
+                <div class="form-group">
+                    <label for="id_bank_name">Bank Name:</label>
+                    <input type="text" id="id_bank_name" name="bank_name" required>
+                </div>
+                <!-- Branch Name -->
+                <div class="form-group">
+                    <label for="id_branch_name">Branch Name:</label>
+                    <input type="text" id="id_branch_name" name="branch_name" required>
+                </div>
                 <button type="submit">Link Bank Account</button>
             </form>
+            <a href="{% url 'payment_methods' %}" class="button-link">Payment Methods</a>
         </div>
 
         <!-- Manual Entry Form -->
@@ -215,30 +230,24 @@
         </div>
 
         <!-- Due Date Reminders -->
-        <h3>Due Date Reminders</h3>
-        <div class="form-section" id="due-date-reminder-form">
-            <h4>Email Reminder</h4>
-            <form>
-                <div class="form-group">
-                    <label for="email-reminders">Provide your email to set up a reminder:</label>
-                    <input type="email" id="email-reminders" placeholder="Enter your email">
-                </div>
-                <button type="submit">Set up reminder</button>
-            </form>
+        <form method="post" action="{% url 'due_date_reminder' %}">
+            {% csrf_token %}
+            <!-- Bill Name -->
+            <div class="form-group">
+                <h3>Set reminder</h3>
+                <label for="bill-name">Enter Bill Name:</label>
+                <input type="text" id="bill-name" name="bill_name" required>
+            </div>
+            <!-- Due Date -->
+            <div class="form-group">
+                <label for="due-date">Due Date:</label>
+                <input type="date" id="due-date" name="due_date" required>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit">Set Reminder</button>
+        </form>
 
-            <h4>Custom Reminder</h4>
-            <form>
-                <div class="form-group">
-                    <label for="custom-date">Select Date:</label>
-                    <input type="date" id="custom-date" name="custom_date">
-                </div>
-                <div class="form-group">
-                    <label for="custom-time">Select Time:</label>
-                    <input type="time" id="custom-time" name="custom_time">
-                </div>
-                <button type="submit">Set up custom reminder</button>
-            </form>
-        </div>
+
 
         <!-- Bill Scheduling -->
         <div class="scheduling-section">
@@ -246,29 +255,16 @@
             <ul>
                 <li><a href="{% url 'payment_history' %}">View Payment History</a></li>
                 <!-- ... other list items ... -->
-                <li>Download statements</li>
+                
             </ul>
             
             <!-- Additional content for Bill Scheduling can be added here -->
             <!-- For example: -->
-            <h4>Schedule Future Payments</h4>
-            <form>
-            <h4>Schedule Future Payments</h4>
-            <form>
-                <div class="form-group">
-                    <label for="scheduled-date">Select Date:</label>
-                    <input type="date" id="scheduled-date" name="scheduled_date">
-                </div>
-                <div class="form-group">
-                    <label for="scheduled-amount">Enter Amount:</label>
-                    <input type="text" id="scheduled-amount" name="scheduled_amount" placeholder="Enter Amount">
-                </div>
-                <button type="submit">Schedule Payment</button>
-            </form>
+            
         </div>
 
         <!-- Search and Sort History -->
-        <h3>Search and Sort History</h3>
+        <h3>Search Bill</h3>
         <form method="get" action="{% url 'search_bills' %}">
             <div class="form-group">
                 <label for="search-query">Search Bills:</label>

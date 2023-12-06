@@ -166,27 +166,9 @@
         </div>
     </form>
 
-    <form>
-        <h1>Goal Setting & Tracking</h1>
-        <label for="goalDescription">Goal Description</label>
-        <input type="text" name="goalDescription" id="goalDescription" placeholder="Enter goal description">
+    
 
-        <label for="goalProgress">Goal Progress</label>
-        <progress id="goalProgress" value="30" max="100"></progress>
-
-        <label for="savingsGoalAlert">Savings Goal Alert</label>
-        <input type="checkbox" name="savingsGoalAlert" id="savingsGoalAlert">
-
-        <button type="submit">Create Goal</button>
-    </form>
-
-    <!-- Irregular Expense Alerts/Reports Section -->
-    <div class="social" id="irregularExpenseAlert">
-        <div class="fb">
-            <i class="fas fa-bell"></i> Irregular Expense Alerts
-        </div>
-    </div>
-
+    
     <script>
         document.getElementById('showRemainingBudget').addEventListener('click', function () {
             const selectedMonth = document.getElementById('budgetMonth').value;
@@ -237,7 +219,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
-                    document.getElementById('remainingBudgetMessage').innerText = 'Error fetching data';
+                    document.getElementById('remainingBudgetMessage').innerText = '';
                 });
         });
 

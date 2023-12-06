@@ -6,7 +6,7 @@ from .forms import UserProfileForm
 from .models import CustomUser
 from .models import CustomBill,BillCategory
 from .forms import CustomBillForm, BillCategoryForm
-from .models import CreditCard
+from .models import CreditCard,BankAccount
 from .forms import CreditCardForm
 from .forms import BankAccountForm
 from .models import Expense,Budget
@@ -50,6 +50,56 @@ def loginpage(request):
             return HttpResponse('Username or Password is Incorrect')
 
     return render(request, 'login.html')
+
+
+##FORGOT PASS
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.views import PasswordResetConfirmView
+def forgot_password(request):
+    if request.method == 'POST':
+        try:
+            username1 = request.POST.get('username')
+
+            # Assuming you're using a custom user model (CustomUser) for authentication
+            user = CustomUser.objects.filter(username=username1).first()
+
+            if user:
+                # Generate a password reset token
+                token = default_token_generator.make_token(user)
+
+                # Create a password reset link
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                reset_url = request.build_absolute_uri(reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token}))
+
+                # Send an email with the reset link
+                subject = 'Password Reset'
+                message = f'Click the following link to reset your password:\n\n{reset_url}'
+                from_email = 'needspeed3600@gmail.com'  # Change this to your email address
+                to_email = 'maheer7helal@gmail.com'
+
+                send_mail(subject, message, from_email, [to_email])
+
+                return HttpResponse('Password reset link sent to your email. Please check your inbox.')
+            else:
+                return HttpResponse('User not found. Please check the entered username.')
+
+        except Exception as e:
+            return HttpResponse('An error occurred: ' + str(e))
+
+    return render(request, 'forgot_password.html')
+
+def reset_password(request, uidb64, token):
+    try:
+        return PasswordResetConfirmView.as_view(
+            template_name='reset_password.html',
+            success_url='/login/'  # Redirect to login page upon successful password reset
+        )(request, uidb64=uidb64, token=token, set_password_form=SetPasswordForm)
+    except Exception as e:
+        return render(request, 'reset_password_failed.html', {'error_message': str(e)})
+
+#######################
 
 def signup(request):
     print("Inside signup view")
@@ -245,6 +295,39 @@ def link_bank_account(request):
         form = BankAccountForm()
 
     return render(request, 'billpay.html', {'bank_account_form': form})  
+
+def payment_methods(request):
+    user_credit_cards = CreditCard.objects.filter(user=request.user)
+    user_bank_accounts = BankAccount.objects.filter(user=request.user)
+
+    return render(request, 'payment_methods.html', {'credit_cards': user_credit_cards, 'bank_accounts': user_bank_accounts})
+
+from django.shortcuts import get_object_or_404
+def delete_entry(request):
+    if request.method == 'POST':
+        entry_type = request.POST.get('type')
+        entry_id = request.POST.get('id')
+        print(entry_type)
+        # Handle deletion based on entry_type and entry_id
+        try:
+            if entry_type == 'bank_account':
+                entry = get_object_or_404(BankAccount, id=entry_id, user=request.user)
+                entry.delete()
+            elif entry_type == 'credit_card':
+                entry = get_object_or_404(CreditCard, id=entry_id, user=request.user)
+                entry.delete()
+            else:
+                # Invalid entry type
+                return JsonResponse({'success': False, 'message': 'Invalid entry type'})
+
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+
 def budget(request):
     return render(request, 'budget.html')
 
@@ -381,3 +464,31 @@ def payment_history(request):
     custom_bills = CustomBill.objects.filter(user=request.user)
 
     return render(request, 'payment_history.html', {'custom_bills': custom_bills})
+
+
+
+
+def due_date_reminder(request):
+    if request.method == 'POST':
+        bill_name = request.POST.get('bill_name')
+        due_date = request.POST.get('due_date')
+
+        # Send email reminder immediately
+        send_due_date_email(request.user.username, bill_name, due_date)
+
+        return redirect('bill_pay')  # Redirect to the billpay page or another appropriate URL
+
+    return render(request, 'billpay.html')
+
+
+def send_due_date_email(username, bill_name, due_date):
+    subject = f"Reminder: Your Bill '{bill_name}' is Due!"
+    message = f"Dear {username},\n\n"\
+              f"This is a reminder that your bill '{bill_name}' is due on {due_date}.\n"\
+              f"Please make the payment on time.\n\n"\
+              f"Thank you!\nYour Money Management Team"
+
+    from_email = 'needspeed3600@gmail.com'
+    recipient_list = ['needspeed3600@gmail.com']
+
+    send_mail(subject, message, from_email, recipient_list)

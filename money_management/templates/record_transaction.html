@@ -1,24 +1,160 @@
-<!-- record_transaction.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Record Transaction</title>
-    <!-- Add any additional styling or scripts here -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
+    <style media="screen">
+        body {
+            background-color: #00CED1;
+            font-family: 'Poppins', sans-serif;
+            color: #000000;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #000000;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #ffffff;
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            display: none; /* Initially hide the table */
+        }
+
+        table, th, td {
+            border: 1px solid #fff;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .show-button {
+            width: 100%;
+            background-color: #ffffff;
+            color: #080710;
+            padding: 10px 0;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+    </style>
 </head>
 <body>
 
-<h2>Record Transaction</h2>
+    <form method="post">
+        {% csrf_token %}
 
-<form method="post">
-    {% csrf_token %}
-    
-    {{ form.as_p }}
-    
-    <button type="submit">Record Transaction</button>
-</form>
+        <!-- Display stock information -->
+        <h1>Record Transaction for {{ stock_info.name }}</h1>
+        <p><strong>Stock Symbol:</strong> {{ stock_info.symbol }}</p>
+        <p><strong>Stock Name:</strong> {{ stock_info.name }}</p>
+
+        <!-- Your form fields with labels -->
+        <label for="{{ form.stock_name.id_for_label }}">Stock Name:</label>
+        {{ form.stock_name }}
+        <br>
+
+        <label for="{{ form.transaction_type.id_for_label }}">Transaction Type:</label>
+        {{ form.transaction_type }}
+        <br>
+
+        <label for="{{ form.quantity.id_for_label }}">Quantity:</label>
+        {{ form.quantity }}
+        <br>
+
+        <label for="{{ form.price_per_unit.id_for_label }}">Price per Unit:</label>
+        {{ form.price_per_unit }}
+        <br>
+
+        <button type="submit">Record Transaction</button>
+    </form>
+
+    <!-- Show Transactions button and table -->
+    <button class="show-button" onclick="toggleTable()">Show Transactions</button>
+
+    <table id="transactionTable">
+        <thead>
+            <tr>
+                <th>Transaction Type</th>
+                <th>Quantity</th>
+                <th>Price per Unit</th>
+                <th>Transaction Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.quantity }}</td>
+                    <td>{{ transaction.price_per_unit }}</td>
+                    <td>{{ transaction.transaction_date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleTable() {
+            var table = document.getElementById("transactionTable");
+            table.style.display = (table.style.display === "none") ? "table" : "none";
+        }
+    </script>
 
 </body>
 </html>

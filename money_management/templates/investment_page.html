@@ -96,11 +96,13 @@
                 <a href="{% url 'gain_loss_calculation' stock_symbol=stock_info.symbol %}">Gain/Loss Calculation</a>
                 <a href="{% url 'historical_data_trend_analysis' stock_symbol=stock_info.symbol %}">Historical Data Trend Analysis</a>
 
-                <a href="{% url 'record_transaction' %}">Record Transaction</a>
+                {% if stock_info.symbol %}
+                    <a href="{% url 'record_transaction' stock_symbol=stock_info.symbol %}">Record Transaction</a>
+                {% endif %}
             <!-- Add link to automatic_transaction_updates.html -->
             
             <!-- Add link to dividend_tracking.html -->
-                <a href="{% url 'dividend_tracking' %}">Dividend Tracking</a>
+
                 
             </div>
         </li>
@@ -108,11 +110,11 @@
     </ul>
     <div>
         <!-- Navigation section -->
-        <h2>  Navigation</h2>
+        <h1>Navigation</h1>
         <ul>
             <!-- Other navigation links -->
             <li><a href="{% url 'market_news' %}" class="btn btn-market-news">Market News</a></li>
-            <li><a href="{% url 'manage_portfolios' %}">manage_portfolios</a></li>
+            <li><a href="{% url 'manage_portfolios' %}">Manage Portfolios</a></li>
         </ul>
     </div>
 </body> 

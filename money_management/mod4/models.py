@@ -9,11 +9,15 @@ class Stock(models.Model):
         return self.symbol
 
 class Transaction(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Use your custom user model
-    stock = models.ForeignKey('Stock', on_delete=models.CASCADE)
-    transaction_type = models.CharField(max_length=10, choices=[('BUY', 'Buy'), ('SELL', 'Sell')])
+    TRANSACTION_CHOICES = [
+        ('BUY', 'Buy'),
+        ('SELL', 'Sell'),
+    ]
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    stock = models.CharField(max_length=255)  # Change this line
+    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_CHOICES)
     quantity = models.PositiveIntegerField()
-    price_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
+    price_per_unit = models.DecimalField(max_digits=20, decimal_places=10)
     transaction_date = models.DateField(auto_now_add=True)
 
 class Dividend(models.Model):

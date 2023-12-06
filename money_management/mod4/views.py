@@ -109,18 +109,44 @@ def historical_data_trend_analysis(request, stock_symbol):
     except Exception as e:
         return render(request, 'error.html', {'error_message': str(e)})
 
-def record_transaction(request):
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import TransactionForm
+from .models import Stock
+import yfinance as yf
+
+from decimal import Decimal
+
+def record_transaction(request, stock_symbol):
+    stock_info = get_stock_info(stock_symbol)
+    stock = yf.Ticker(stock_symbol)
+    current_value = stock.history(period='1d')['Close'].iloc[-1]
+    formatted_current_value = '{:.10f}'.format(Decimal(str(current_value)))
+
+    # Retrieve transactions related to the current stock
+    transactions = Transaction.objects.filter(stock=stock_info['name'], user=request.user)
+
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
             transaction = form.save(commit=False)
             transaction.user = request.user
+            transaction.stock = stock_info['name']
+            transaction.price_per_unit = formatted_current_value
             transaction.save()
             messages.success(request, 'Transaction recorded successfully.')
-            return redirect('record_transaction')
+            return redirect('record_transaction', stock_symbol=stock_symbol)
+        else:
+            messages.error(request, 'Form is not valid. Please check the entered values.')
     else:
-        form = TransactionForm()
-    return render(request, 'record_transaction.html', {'form': form})
+        form = TransactionForm(initial={'stock_symbol': stock_symbol, 'user_entered_stock_name': stock_info['name'], 'price_per_unit': formatted_current_value})
+
+    return render(request, 'record_transaction.html', {'form': form, 'stock_info': stock_info, 'stock_symbol': stock_symbol, 'current_value': formatted_current_value, 'transactions': transactions})
+
+def get_stock_info(stock_symbol):
+    stock = yf.Ticker(stock_symbol)
+    stock_data = stock.info
+    stock_info = {'symbol': stock_data.get('symbol', ''), 'name': stock_data.get('longName', '')}
+    return stock_info
 
 
 def dividend_tracking(request):
