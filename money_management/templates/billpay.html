@@ -233,11 +233,8 @@
         <form method="post" action="{% url 'due_date_reminder' %}">
             {% csrf_token %}
             <!-- Bill Name -->
+            <h3>Reminder</h3>
             <div class="form-group">
-<<<<<<< HEAD
-                <h3>Set reminder</h3>
-=======
->>>>>>> e6787abb1233c0d1c5aeca450ba858a8e3f13725
                 <label for="bill-name">Enter Bill Name:</label>
                 <input type="text" id="bill-name" name="bill_name" required>
             </div>
@@ -258,7 +255,7 @@
             <ul>
                 <li><a href="{% url 'payment_history' %}">View Payment History</a></li>
                 <!-- ... other list items ... -->
-                
+                <li>Download statements</li>
             </ul>
             
             <!-- Additional content for Bill Scheduling can be added here -->

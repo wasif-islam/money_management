@@ -116,6 +116,7 @@ import yfinance as yf
 
 from decimal import Decimal
 
+
 def record_transaction(request, stock_symbol):
     stock_info = get_stock_info(stock_symbol)
     stock = yf.Ticker(stock_symbol)

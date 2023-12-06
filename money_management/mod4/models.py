@@ -20,6 +20,7 @@ class Transaction(models.Model):
     price_per_unit = models.DecimalField(max_digits=20, decimal_places=10)
     transaction_date = models.DateField(auto_now_add=True)
 
+
 class Dividend(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Use your custom user model
     stock = models.ForeignKey('Stock', on_delete=models.CASCADE)
