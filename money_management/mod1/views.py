@@ -222,7 +222,7 @@ def logoutpage(request):
     logout(request)
     return redirect('login')
 
-@login_required(login_url='login')
+@login_required(login_url='signup')
 def billpay(request):
     # Check if default categories exist, create them if not
     default_categories = ['Utilities', 'Entertainment', 'Food']
